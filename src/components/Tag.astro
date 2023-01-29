@@ -1,0 +1,30 @@
+---
+export interface Props {
+  name: string;
+  size?: "sm" | "lg";
+}
+
+const { name, size = "sm" } = Astro.props;
+---
+
+<li
+  class={`inline-block ${
+    size === "sm" ? "my-1 underline-offset-4" : "my-3 mx-1 underline-offset-8"
+  }`}
+>
+  <a
+    href={`/tags/${name}`}
+    class={`${size === "sm" ? "text-sm" : "text-lg"} px-2 py-1`}
+  >
+    {name}
+  </a>
+</li>
+
+<style>
+  a {
+    @apply relative hover:underline decoration-dashed bg-skin-fill py-0.5 rounded-md;
+  }
+  a svg {
+    @apply w-6 h-6 text-skin-base scale-95 opacity-80 -mr-5;
+  }
+</style>

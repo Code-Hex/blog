@@ -1,0 +1,90 @@
+---
+import LinkButton from "./LinkButton.astro";
+
+const shareIcons = {
+  Facebook: `<svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-share-tabler"
+    fill="none"
+  >
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.125 3h-1.5c-1.161 0-1.714.3-1.5 1.5V6h3v3h-3v9h-3V9h-3V6h3V4.5c-.429-2.7.857-4.5 3-4.5 2.293 0 3 .6 3 1.5V3Z"/>
+  </svg>`,
+  LinkedIn: `<svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-share-tabler"
+    fill="none"
+  >
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.157 0h15.432c.707 0 1.286.583 1.286 1.298v15.404c0 .715-.579 1.298-1.286 1.298H2.157a1.291 1.291 0 0 1-1.282-1.298V1.298C.875.583 1.45 0 2.157 0Zm1.49 15.429H6.32v-8.59H3.647v8.59Zm1.334-9.764a1.548 1.548 0 0 1 0-3.094 1.55 1.55 0 0 1 1.547 1.547c0 .856-.69 1.547-1.547 1.547Zm8.667 9.764h2.668v-4.71c0-2.314-.502-4.094-3.202-4.094-1.298 0-2.17.712-2.528 1.387h-.036V6.838H7.99v8.59h2.669v-4.25c0-1.121.212-2.206 1.603-2.206 1.366 0 1.386 1.282 1.386 2.278v4.179Z"/>
+  </svg>`,
+  Twitter: `<svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-share-tabler"
+    fill="none"
+  >
+    <path d="M18.75 3.507a7.452 7.452 0 0 1-2.121.57 3.658 3.658 0 0 0 1.623-2.009 7.514 7.514 0 0 1-2.344.882 3.72 3.72 0 0 0-2.695-1.15c-2.04 0-3.694 1.63-3.694 3.636 0 .286.032.562.096.828a10.524 10.524 0 0 1-7.611-3.798 3.562 3.562 0 0 0-.501 1.828c0 1.26.65 2.373 1.643 3.025a3.717 3.717 0 0 1-1.672-.456v.046c0 1.762 1.271 3.233 2.962 3.564a3.733 3.733 0 0 1-1.667.064c.468 1.444 1.834 2.494 3.448 2.526a7.482 7.482 0 0 1-4.585 1.554c-.299 0-.592-.017-.882-.052A10.565 10.565 0 0 0 6.41 16.2c6.794 0 10.509-5.54 10.509-10.343 0-.156-.006-.314-.012-.47a7.499 7.499 0 0 0 1.843-1.88Z">
+  </svg>`,
+  RSS: `<svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+  >
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0v3h1.5C8.974 3 15 9.026 15 16.5V18h3v-1.5C18 7.406 10.594 0 1.5 0H0Zm0 6v3h1.5C5.66 9 9 12.34 9 16.5V18h3v-1.5C12 10.72 7.28 6 1.5 6H0Zm0 9.375a2.624 2.624 0 1 1 5.249-.001A2.624 2.624 0 0 1 0 15.375Z"/>
+  </svg>`,
+};
+
+export interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+---
+
+<aside class="share">
+  <p class="share-this-page">Share this page</p>
+  <div class="share-icons">
+    {
+      [
+        {
+          name: "Facebook",
+          href: `https://www.facebook.com/sharer.php?u=${url}&t=${title}`,
+          linkTitle: "Share this codehex blog post on Facebook",
+        },
+        {
+          name: "Twitter",
+          href: `https://twitter.com/share?text=${title}&url=${url}`,
+          linkTitle: "Share this codehex blog post on Twitter",
+        },
+        {
+          name: "LinkedIn",
+          href: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+          linkTitle: "Share this codehex blog post on LinkedIn",
+        },
+        {
+          name: "RSS",
+          href: `/rss.xml`,
+          linkTitle: "RSS Feed",
+        },
+      ].map(social => (
+        <LinkButton
+          href={social.href}
+          className="share-button"
+          title={social.linkTitle}
+          target="_blank"
+        >
+          <Fragment set:html={shareIcons[social.name]} />
+        </LinkButton>
+      ))
+    }
+  </div>
+</aside>
+<style>
+  .share {
+    @apply text-[#fff] flex flex-row bg-[#0572ec]/[0.1] items-center justify-end py-4 px-4 space-x-4;
+  }
+  .share-this-page {
+    @apply italic text-skin-base text-xs;
+  }
+  .share-icons {
+    @apply flex flex-row items-center space-x-4;
+  }
+</style>

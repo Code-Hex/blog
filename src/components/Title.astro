@@ -1,0 +1,31 @@
+---
+import Tag from "./Tag.astro";
+import Datetime from "./Datetime";
+
+export interface Props {
+  title: string;
+  tags: string[];
+  datetime: string;
+}
+
+const { title, tags, datetime } = Astro.props;
+---
+
+<div class="single-header">
+  <h1 class="post-title">{title}</h1>
+  <ul class="tags-container">
+    {tags.map(tag => <Tag name={tag} />)}
+  </ul>
+  <Datetime datetime={datetime} size="sm" />
+</div>
+<style>
+  .single-header {
+    @apply w-full bg-skin-card px-4 py-4 flex flex-col items-center text-center;
+  }
+  .post-title {
+    @apply font-semibold text-2xl text-[#fff] mb-4;
+  }
+  .tags-container {
+    @apply mb-4;
+  }
+</style>

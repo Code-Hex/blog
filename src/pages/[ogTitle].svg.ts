@@ -2,8 +2,8 @@ import type { APIRoute, MarkdownInstance } from "astro";
 import generateOgImage from "@utils/generateOgImage";
 import type { Frontmatter } from "@types";
 
-export const get: APIRoute = async ({ params }) => ({
-  body: await generateOgImage(params.ogTitle),
+export const get: APIRoute = async ({ params, props }) => ({
+  body: await generateOgImage(params.ogTitle, props.slug, props.datetime),
 });
 
 const postImportResult = import.meta.glob<MarkdownInstance<Frontmatter>>(
@@ -20,5 +20,6 @@ export function getStaticPaths() {
     .filter(({ frontmatter }) => !frontmatter.ogImage)
     .map(({ frontmatter }) => ({
       params: { ogTitle: frontmatter.title },
+      props: { slug: frontmatter.slug, datetime: frontmatter.datetime },
     }));
 }

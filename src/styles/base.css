@@ -65,7 +65,6 @@
     prose-ol:!text-skin-base prose-ul:!text-skin-base prose-blockquote:opacity-80 
     prose-figcaption:!text-skin-base prose-figcaption:opacity-70
     prose-code:!text-[#ec489a] prose-code:p-1 prose-code:rounded
-    prose-code:after:!content-[''] prose-code:before:!content-['']
     prose-strong:!text-skin-base prose-table:text-skin-base 
     prose-pre:!text-skin-base prose-a:!text-skin-base 
     prose-hr:!border-skin-line prose-li:marker:!text-skin-accent 

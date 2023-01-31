@@ -34,9 +34,15 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
     </button>
   </div>
   <main id="main-content">
-    <Title title={title} datetime={datetime} tags={tags} />
-    <Share title={title} url={Astro.url} />
-    <article id="article" role="article" class="mx-auto max-w-3xl mt-8 prose">
+    <div class="sm:px-4">
+      <Title title={title} datetime={datetime} tags={tags} />
+      <Share title={title} url={Astro.url} />
+    </div>
+    <article
+      id="article"
+      role="article"
+      class="mx-auto max-w-3xl mt-8 px-4 prose"
+    >
       <Content />
     </article>
   </main>
@@ -45,6 +51,6 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
 
 <style>
   main {
-    @apply max-w-3xl mx-auto px-4 pb-12 w-full;
+    @apply max-w-3xl mx-auto pb-12 w-full;
   }
 </style>

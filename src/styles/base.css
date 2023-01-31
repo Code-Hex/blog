@@ -74,6 +74,9 @@
   .prose a {
     @apply !text-[#85beff] visited:!text-[#c084fc];
   }
+  .prose table {
+    @apply block overflow-auto;
+  }
   .prose thead th:first-child,
   tbody td:first-child,
   tfoot td:first-child {

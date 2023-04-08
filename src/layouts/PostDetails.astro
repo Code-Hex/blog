@@ -2,18 +2,19 @@
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import type { MarkdownInstance } from "astro";
-import type { Frontmatter } from "src/types";
+import type { CollectionEntry } from "astro:content";
 import Share from "@components/Share.astro";
 import Title from "@components/Title.astro";
 
 export interface Props {
-  post: MarkdownInstance<Frontmatter>;
+  post: CollectionEntry<"blog">;
 }
 
-const { frontmatter, Content } = Astro.props.post;
+const { post } = Astro.props;
 
-const { title, author, description, ogImage, datetime, tags } = frontmatter;
+const { title, author, description, ogImage, pubDatetime, tags } = post.data;
+
+const { Content } = await post.render();
 
 const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
   .href;
@@ -21,9 +22,9 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
 
 <Layout title={title} author={author} description={description} ogImage={ogUrl}>
   <Header />
-  <div class="max-w-3xl mx-auto w-full px-2 flex justify-start">
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
-      class="mt-8 mb-2 hover:opacity-75 flex focus-outline text-[#fff]"
+      class="focus-outline mt-8 mb-2 flex text-[#fff] hover:opacity-75"
       onclick="history.back()"
     >
       <svg xmlns="http://www.w3.org/2000/svg"
@@ -35,13 +36,13 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
   </div>
   <main id="main-content">
     <div class="sm:px-4">
-      <Title title={title} datetime={datetime} tags={tags} />
-      <Share title={title} url={Astro.url} />
+      <Title title={title} datetime={pubDatetime} tags={tags} />
+      <Share title={title} url={Astro.url.toString()} />
     </div>
     <article
       id="article"
       role="article"
-      class="mx-auto max-w-3xl mt-8 px-4 prose"
+      class="prose mx-auto mt-8 max-w-3xl px-4"
     >
       <Content />
     </article>
@@ -51,6 +52,6 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
 
 <style>
   main {
-    @apply max-w-3xl mx-auto pb-12 w-full;
+    @apply mx-auto w-full max-w-3xl pb-12;
   }
 </style>

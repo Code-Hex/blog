@@ -1,7 +1,7 @@
 ---
 title: ワンライナーで CSV に対して SQLite クエリを実行する
-datetime: 2022-06-22T00:06:57+09:00
-slug: oneline_sqlite
+pubDatetime: 2022-06-22T00:06:57+09:00
+postSlug: oneline_sqlite
 featured: false
 draft: false
 tags:

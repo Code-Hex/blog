@@ -13,18 +13,18 @@ const { name, size = "sm" } = Astro.props;
   }`}
 >
   <a
-    href={`/tags/${name}`}
-    class={`${size === "sm" ? "text-sm" : "text-lg"} px-2 py-1`}
+    href={`/tags/${name.toLowerCase()}`}
+    class={`${size === "sm" ? "text-sm" : "text-lg"} pr-2 group`}
   >
-    {name}
+    {name.toLowerCase()}
   </a>
 </li>
 
 <style>
   a {
-    @apply relative hover:underline decoration-dashed bg-skin-fill py-0.5 rounded-md;
+    @apply relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1;
   }
   a svg {
-    @apply w-6 h-6 text-skin-base scale-95 opacity-80 -mr-5;
+    @apply -mr-5 h-6 w-6 scale-95 text-skin-base opacity-80 group-hover:fill-skin-accent;
   }
 </style>

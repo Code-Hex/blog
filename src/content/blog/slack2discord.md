@@ -1,7 +1,7 @@
 ---
 title: Slack から Discord へ移行した
-datetime: 2022-08-02T13:36:48+09:00
-slug: slack2discord
+pubDatetime: 2022-08-02T13:36:48+09:00
+postSlug: slack2discord
 featured: false
 draft: false
 tags:

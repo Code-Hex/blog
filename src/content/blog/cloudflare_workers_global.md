@@ -1,7 +1,7 @@
 ---
 title: Cloudflare Workers で使えるグローバル変数を一覧する
-datetime: 2022-07-06T20:47:34+09:00
-slug: cloudflare_workers_global
+pubDatetime: 2022-07-06T20:47:34+09:00
+postSlug: cloudflare_workers_global
 featured: false
 draft: false
 tags:

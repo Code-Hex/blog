@@ -5,7 +5,7 @@ import Datetime from "./Datetime";
 export interface Props {
   title: string;
   tags: string[];
-  datetime: string;
+  datetime: string | Date;
 }
 
 const { title, tags, datetime } = Astro.props;

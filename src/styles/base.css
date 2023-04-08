@@ -93,6 +93,9 @@
   .prose h2#table-of-contents + p {
     @apply hidden;
   }
+  .prose pre {
+    @apply -ml-4 w-screen rounded-none sm:ml-0 sm:w-full sm:rounded-md;
+  }
 
   /* ===== scrollbar ===== */
   html {

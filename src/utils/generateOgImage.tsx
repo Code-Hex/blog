@@ -1,5 +1,6 @@
 import satori, { SatoriOptions } from "satori";
 import { SITE } from "@config";
+import { Transformer } from "@napi-rs/image";
 
 const fetchFonts = async () => {
   // Regular Font
@@ -162,7 +163,10 @@ const generateOgImage = async (
   datetime: string | Date
 ) => {
   if (!slug) throw new Error("slug is required");
-  return await satori(ogImage(mytext, slug, new Date(datetime)), options);
+  // https://github.com/vercel/satori/issues/235
+  const svg = await satori(ogImage(mytext, slug, new Date(datetime)), options);
+  const trasformer = Transformer.fromSvg(svg);
+  return await trasformer.jpeg();
 };
 
 export default generateOgImage;

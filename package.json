@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "^6.1.0",
     "@astrojs/rss": "^2.3.2",
+    "@napi-rs/image": "^1.6.1",
     "astro": "^2.2.1",
     "fuse.js": "^6.6.2",
     "github-slugger": "^2.0.0",

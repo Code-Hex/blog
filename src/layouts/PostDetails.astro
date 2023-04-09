@@ -34,7 +34,7 @@ const html = markdownHtml(post.body, {
 // const { Content } = await post.render();
 
 const ogUrl = new URL(
-  ogImage ? ogImage : `${slugify(post.data)}.svg`,
+  ogImage ? ogImage : `${slugify(post.data)}.jpg`,
   Astro.url.origin
 ).href;
 ---

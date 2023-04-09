@@ -5,6 +5,19 @@ import Footer from "@components/Footer.astro";
 import type { CollectionEntry } from "astro:content";
 import Share from "@components/Share.astro";
 import Title from "@components/Title.astro";
+import zennMarkdownToHtml from "zenn-markdown-html";
+import { Blog } from "@components/Blog";
+import type { MarkdownOptions } from "zenn-markdown-html/lib/types";
+
+// build時にそのまま使うとエラーになるため修正
+type MarkdownHtml = (text: string, options?: MarkdownOptions) => string;
+type MarkdownHtmlAtBuild = { default: MarkdownHtml };
+
+let markdownHtml: MarkdownHtml = zennMarkdownToHtml;
+
+if (typeof zennMarkdownToHtml !== "function") {
+  markdownHtml = (zennMarkdownToHtml as MarkdownHtmlAtBuild).default;
+}
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -13,8 +26,11 @@ export interface Props {
 const { post } = Astro.props;
 
 const { title, author, description, ogImage, pubDatetime, tags } = post.data;
+const html = markdownHtml(post.body, {
+  embedOrigin: "https://embed.zenn.studio",
+});
 
-const { Content } = await post.render();
+// const { Content } = await post.render();
 
 const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
   .href;
@@ -39,13 +55,7 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
       <Title title={title} datetime={pubDatetime} tags={tags} />
       <Share title={title} url={Astro.url.toString()} />
     </div>
-    <article
-      id="article"
-      role="article"
-      class="prose mx-auto mt-8 max-w-3xl px-4"
-    >
-      <Content />
-    </article>
+    <Blog html={html} />
   </main>
   <Footer />
 </Layout>

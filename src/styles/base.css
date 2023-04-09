@@ -51,7 +51,7 @@
   svg.icon-share-tabler {
     @apply -my-4 inline-block h-6 w-6 scale-125 fill-[#ffffff] sm:scale-110;
   }
-  .prose {
+  /* .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
     prose-h3:italic prose-p:!text-skin-base 
     prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
@@ -95,31 +95,96 @@
   }
   .prose pre {
     @apply -ml-4 w-screen rounded-none sm:ml-0 sm:w-full sm:rounded-md;
+  } */
+
+  /* zenn */
+  .znc > p {
+    @apply !text-skin-base;
+  }
+
+  .znc :where(h1, h2, h3, h4, h5, h6, strong, .footnotes-title) {
+    @apply !text-[#fff];
+  }
+
+  .znc :where(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.5;
+    outline: 0;
+  }
+
+  .znc a {
+    @apply !text-[#85beff] visited:!text-[#c084fc];
+  }
+
+  .znc table {
+    @apply !text-[#000];
+  }
+
+  .znc thead th:first-child,
+  tbody td:first-child,
+  tfoot td:first-child {
+    padding-left: 0.5714286em;
+  }
+
+  .znc blockquote {
+    @apply !break-all !border-l-skin-accent !border-opacity-50 !text-skin-base !opacity-80;
+  }
+
+  .znc ol,
+  ul {
+    @apply !text-skin-base;
+  }
+
+  .znc ul {
+    @apply overflow-x-clip;
+  }
+
+  .znc li {
+    @apply marker:!text-skin-accent;
+  }
+
+  .znc details {
+    @apply inline-block w-full cursor-pointer select-none;
+  }
+
+  .znc details[open] summary {
+    @apply !rounded-[9px_9px_0_0];
+  }
+
+  .znc .details-content {
+    @apply !rounded-[0_0_9px_9px] !bg-[transparent];
+  }
+
+  .znc summary {
+    @apply !focus-outline !bg-skin-card;
+  }
+
+  .znc code::before {
+    content: open-quote;
+  }
+
+  .znc code::after {
+    content: close-quote;
+  }
+
+  .znc code {
+    quotes: "`" "`";
+    @apply break-all !bg-[inherit] !text-[#f472b6];
+  }
+
+  .znc .code-block-container > pre > code::before,
+  .znc .code-block-container > pre > code::after {
+    content: none;
+  }
+
+  .znc .code-block-container > pre > code {
+    @apply !text-[#fff];
   }
 
   /* ===== scrollbar ===== */
   html {
     overflow-y: scroll;
-  }
-
-  /* width */
-  ::-webkit-scrollbar {
-    @apply w-3;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    @apply bg-skin-fill;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    @apply bg-skin-card;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-skin-card-muted;
   }
 }
 

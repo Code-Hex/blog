@@ -29,7 +29,7 @@ const fallbackImageURL = new URL(SITE.ogImage, Astro.url.origin).href;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -82,6 +82,8 @@ const fallbackImageURL = new URL(SITE.ogImage, Astro.url.origin).href;
     }
 
     <script is:inline src="/toggle-theme.js"></script>
+    <script is:inline src="https://embed.zenn.studio/js/listen-embed-event.js"
+    ></script>
   </head>
   <body>
     <slot />

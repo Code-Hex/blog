@@ -123,14 +123,10 @@ Slack では標準で RSS のインテグレーションが存在したが、な
 
 今回私が行ったことが誰かの参考になることを期待してこの記事を書いた。
 
-<details>
-  <summary>メモチャンネルの様子</summary>
+:::details メモチャンネルの様子
+![](https://user-images.githubusercontent.com/6500104/182301523-b2eaeb63-2930-4a67-afe4-040b27870201.png)
+:::
 
-  <img width="998" alt="スクリーンショット 2022-08-02 14 50 25" src="https://user-images.githubusercontent.com/6500104/182301523-b2eaeb63-2930-4a67-afe4-040b27870201.png" />
-</details>
-
-<details>
-  <summary>フィードチャンネルの様子</summary>
-
-  <img width="998" alt="スクリーンショット 2022-08-02 14 50 42" src="https://user-images.githubusercontent.com/6500104/182301538-4edb0e91-c735-41ed-9b55-ecbc63d225cb.png" />
-</details>
+:::details フィードチャンネルの様子
+![](https://user-images.githubusercontent.com/6500104/182301538-4edb0e91-c735-41ed-9b55-ecbc63d225cb.png)
+:::

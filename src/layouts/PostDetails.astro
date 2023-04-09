@@ -65,3 +65,8 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
     @apply mx-auto w-full max-w-3xl pb-12;
   }
 </style>
+
+<script>
+  // KaTex support
+  await import("zenn-embed-elements");
+</script>

@@ -8,6 +8,7 @@ import Title from "@components/Title.astro";
 import zennMarkdownToHtml from "zenn-markdown-html";
 import { Blog } from "@components/Blog";
 import type { MarkdownOptions } from "zenn-markdown-html/lib/types";
+import slugify from "@utils/slugify";
 
 // build時にそのまま使うとエラーになるため修正
 type MarkdownHtml = (text: string, options?: MarkdownOptions) => string;
@@ -32,8 +33,10 @@ const html = markdownHtml(post.body, {
 
 // const { Content } = await post.render();
 
-const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
-  .href;
+const ogUrl = new URL(
+  ogImage ? ogImage : `${slugify(post.data)}.svg`,
+  Astro.url.origin
+).href;
 ---
 
 <Layout title={title} author={author} description={description} ogImage={ogUrl}>

@@ -158,8 +158,11 @@ export async function loadGoogleFont({
 
 const generateOgImage = async (
   mytext = SITE.title,
-  slug: string,
-  datetime: string
-) => await satori(ogImage(mytext, slug, new Date(datetime)), options);
+  slug: string | undefined,
+  datetime: string | Date
+) => {
+  if (!slug) throw new Error("slug is required");
+  return await satori(ogImage(mytext, slug, new Date(datetime)), options);
+};
 
 export default generateOgImage;

@@ -14,6 +14,6 @@ export function getStaticPaths() {
     .filter(({ data }) => !data.ogImage)
     .map(({ data }) => ({
       params: { ogTitle: data.title },
-      // props: { slug: frontmatter.slug, datetime: frontmatter.datetime },
+      props: { slug: data.postSlug, datetime: data.pubDatetime },
     }));
 }

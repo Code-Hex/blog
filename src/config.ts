@@ -3,9 +3,9 @@ import type { SocialObjects } from "./types";
 export const SITE = {
   website: "https://blog.codehex.dev/",
   author: "codehex",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
+  desc: "プログラミングやガジェッド、思ったことを雑に書いていくブログです。",
   title: "アルパカ三銃士",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "main-ogp.png",
   lightAndDarkMode: false,
   postPerPage: 3,
 };

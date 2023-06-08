@@ -37,6 +37,11 @@ export default defineConfig({
     smartypants: false,
     extendDefaultPlugins: true,
   },
+  vite: {
+    optimizeDeps: {
+      exclude: ["@napi-rs/image-darwin-arm64"],
+    },
+  },
   // output: "server",
   // adapter: cloudflare()
 });

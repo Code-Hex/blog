@@ -161,15 +161,14 @@
   }
 
   .znc code::before {
-    content: open-quote;
+    content: "`";
   }
 
   .znc code::after {
-    content: close-quote;
+    content: "`";
   }
 
   .znc code {
-    quotes: "`" "`";
     @apply break-all !bg-[inherit] !text-[#f472b6];
   }
 

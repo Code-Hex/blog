@@ -1,5 +1,4 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-/** @type {import('tailwindcss').Config} */
 
 function withOpacity(variableName) {
   return ({ opacityValue }) => {
@@ -10,6 +9,7 @@ function withOpacity(variableName) {
   };
 }
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {

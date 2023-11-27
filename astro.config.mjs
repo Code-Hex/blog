@@ -13,9 +13,7 @@ export default defineConfig({
   site: "https://blog.codehex.dev/",
   integrations: [
     tailwind({
-      config: {
-        applyBaseStyles: false,
-      },
+      applyBaseStyles: false,
     }),
     react(),
     sitemap(),
@@ -41,6 +39,7 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ["@napi-rs/image-darwin-arm64"],
     },
+    scopedStyleStrategy: "where",
   },
   // output: "server",
   // adapter: cloudflare()

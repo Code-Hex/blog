@@ -1,6 +1,7 @@
 ---
 import { SITE } from "@config";
-import "../styles/base.css";
+import "@styles/base.css";
+import { ViewTransitions } from "astro:transitions";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -9,6 +10,7 @@ export interface Props {
   author?: string;
   description?: string;
   ogImage?: string;
+  canonicalURL?: string;
 }
 
 const {
@@ -16,19 +18,16 @@ const {
   author = SITE.author,
   description = SITE.desc,
   ogImage = SITE.ogImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
 const socialImageURL = new URL(
-  ogImage ? ogImage : SITE.ogImage,
+  ogImage ?? SITE.ogImage ?? "og.png",
   Astro.url.origin
 ).href;
-
-const fallbackImageURL = new URL(SITE.ogImage, Astro.url.origin).href;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -54,12 +53,7 @@ const fallbackImageURL = new URL(SITE.ogImage, Astro.url.origin).href;
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta
-      property="twitter:image"
-      content={socialImageURL.endsWith(".svg")
-        ? fallbackImageURL
-        : socialImageURL}
-    />
+    <meta property="twitter:image" content={socialImageURL} />
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -68,6 +62,7 @@ const fallbackImageURL = new URL(SITE.ogImage, Astro.url.origin).href;
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
       rel="stylesheet"
     />
+    <meta name="theme-color" content="" />
 
     {
       // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
@@ -80,6 +75,8 @@ const fallbackImageURL = new URL(SITE.ogImage, Astro.url.origin).href;
         />
       )
     }
+
+    <ViewTransitions />
 
     <script is:inline src="/toggle-theme.js"></script>
     <script is:inline src="https://embed.zenn.studio/js/listen-embed-event.js"

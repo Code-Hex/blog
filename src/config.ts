@@ -1,6 +1,6 @@
-import type { SocialObjects } from "./types";
+import type { Site, SocialObjects } from "./types";
 
-export const SITE = {
+export const SITE: Site = {
   website: "https://blog.codehex.dev/",
   author: "codehex",
   desc: "プログラミングやガジェッド、思ったことを雑に書いていくブログです。",
@@ -9,6 +9,8 @@ export const SITE = {
   lightAndDarkMode: false,
   postPerPage: 3,
 };
+
+export const LOCALE = ["en-EN"]; // set to [] to use the environment default
 
 export const LOGO_IMAGE = {
   enable: false,

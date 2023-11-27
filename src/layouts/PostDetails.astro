@@ -8,7 +8,7 @@ import Title from "@components/Title.astro";
 import zennMarkdownToHtml from "zenn-markdown-html";
 import { Blog } from "@components/Blog";
 import type { MarkdownOptions } from "zenn-markdown-html/lib/types";
-import slugify from "@utils/slugify";
+import { slugifyStr } from "@utils/slugify";
 
 // build時にそのまま使うとエラーになるため修正
 type MarkdownHtml = (text: string, options?: MarkdownOptions) => string;
@@ -26,24 +26,31 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const { title, author, description, ogImage, pubDatetime, tags } = post.data;
+const { title, author, description, ogImage, canonicalURL, pubDatetime, tags } = post.data;
 const html = markdownHtml(post.body, {
   embedOrigin: "https://embed.zenn.studio",
 });
 
 // const { Content } = await post.render();
 
+const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImage ? ogImage : `${slugify(post.data)}.jpg`,
+  ogImageUrl ?? `/posts/${slugifyStr(title)}.jpg`,
   Astro.url.origin
 ).href;
 ---
 
-<Layout title={title} author={author} description={description} ogImage={ogUrl}>
+<Layout
+  title={title}
+  author={author}
+  description={description}
+  ogImage={ogUrl}
+  canonicalURL={canonicalURL}
+>
   <Header />
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
-      class="focus-outline mt-8 mb-2 flex text-[#fff] hover:opacity-75"
+      class="focus-outline mb-2 mt-8 flex text-[#fff] hover:opacity-75"
       onclick="history.back()"
     >
       <svg xmlns="http://www.w3.org/2000/svg"

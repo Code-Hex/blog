@@ -1,6 +1,7 @@
 ---
 import Tag from "./Tag.astro";
 import Datetime from "./Datetime";
+import { slugifyStr } from "@utils/slugify";
 
 export interface Props {
   title: string;
@@ -12,9 +13,9 @@ const { title, tags, datetime } = Astro.props;
 ---
 
 <div class="single-header">
-  <h1 class="post-title">{title}</h1>
+  <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
   <ul class="tags-container">
-    {tags.map(tag => <Tag name={tag} />)}
+    {tags.map(tag => <Tag name={slugifyStr(tag)} />)}
   </ul>
   <Datetime datetime={datetime} size="sm" />
 </div>

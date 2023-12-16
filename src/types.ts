@@ -26,3 +26,9 @@ export type SocialMedia =
   | "LinkedIn"
   | "Mail"
   | "Twitter";
+
+export type ShareIcons = {
+  [Share in ShareMedia]: string;
+};
+
+export type ShareMedia = "Facebook" | "LinkedIn" | "Twitter" | "RSS";

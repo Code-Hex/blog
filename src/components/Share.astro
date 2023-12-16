@@ -1,7 +1,8 @@
 ---
 import LinkButton from "./LinkButton.astro";
+import type { ShareIcons, ShareMedia } from "../types";
 
-const shareIcons = {
+const shareIcons: ShareIcons = {
   Facebook: `<svg
     xmlns="http://www.w3.org/2000/svg"
     class="icon-share-tabler"
@@ -72,7 +73,7 @@ const { title, url } = Astro.props;
             title={social.linkTitle}
             target="_blank"
           >
-            <Fragment set:html={shareIcons[social.name]} />
+            <Fragment set:html={shareIcons[social.name as ShareMedia]} />
           </LinkButton>
         </div>
       ))

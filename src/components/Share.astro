@@ -1,7 +1,8 @@
 ---
 import LinkButton from "./LinkButton.astro";
+import type { ShareIcons, ShareMedia } from "../types";
 
-const shareIcons = {
+const shareIcons: ShareIcons = {
   Facebook: `<svg
     xmlns="http://www.w3.org/2000/svg"
     class="icon-share-tabler"
@@ -65,26 +66,28 @@ const { title, url } = Astro.props;
           linkTitle: "RSS Feed",
         },
       ].map(social => (
-        <LinkButton
-          href={social.href}
-          className="share-button"
-          title={social.linkTitle}
-          target="_blank"
-        >
-          <Fragment set:html={shareIcons[social.name]} />
-        </LinkButton>
+        <div>
+          <LinkButton
+            href={social.href}
+            className="share-button"
+            title={social.linkTitle}
+            target="_blank"
+          >
+            <Fragment set:html={shareIcons[social.name as ShareMedia]} />
+          </LinkButton>
+        </div>
       ))
     }
   </div>
 </aside>
 <style>
   .share {
-    @apply text-[#fff] flex flex-row bg-[#0572ec]/[0.1] items-center justify-end py-4 px-4 space-x-4;
+    @apply flex flex-row bg-[#202127] items-center justify-end py-4 px-4 space-x-4;
   }
   .share-this-page {
-    @apply italic text-skin-base text-xs;
+    @apply italic text-[#fff] text-xs;
   }
   .share-icons {
-    @apply flex flex-row items-center space-x-4;
+    @apply flex flex-row items-center space-x-2;
   }
 </style>

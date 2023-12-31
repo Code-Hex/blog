@@ -7,7 +7,6 @@ draft: false
 tags:
   - cloudflare
 description: Workers Tech Talks 2 へ参加して AI Gateway について LT もしました。
-ogImage: https://blog-assets.codehex.dev/IMG_1157.jpg
 ---
 
 [Workers Tech Talks #2](https://workers-tech.connpass.com/event/300546/) へ参加しました。

@@ -8,9 +8,13 @@ export const SITE: Site = {
   ogImage: "main-ogp.png",
   lightAndDarkMode: false,
   postPerPage: 3,
+  scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };
 
-export const LOCALE = ["ja-JP", "en-EN"]; // set to [] to use the environment default
+export const LOCALE = {
+  lang: "ja", // html lang code. Set this empty and default will be "ja"
+  langTag: ["ja-JP", "en-EN"], // set to [] to use the environment default
+} as const;
 
 export const LOGO_IMAGE = {
   enable: false,

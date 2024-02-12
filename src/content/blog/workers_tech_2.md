@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-12-16T06:45:06+09:00
 title: Workers Tech Talks 2 へ参加しました
-postSlug: workers_tech_2
+slug: workers_tech_2
 featured: true
 draft: false
 tags:

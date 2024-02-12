@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-04-14T14:00:00+09:00
 title: ChatGPT を Slack で動かすのが楽しい
-postSlug: notahotel_ideathon_2023
+slug: notahotel_ideathon_2023
 featured: true
 draft: false
 tags:

@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-12-04T09:12:33+09:00
 title: Go Conference mini 2023 Winter IN KYOTO に参加しました
-postSlug: go_conf_2023_mini_kyoto
+slug: go_conf_2023_mini_kyoto
 featured: true
 draft: false
 tags:

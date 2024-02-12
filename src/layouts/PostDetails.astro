@@ -7,11 +7,9 @@ import Share from "@components/Share.astro";
 import Title from "@components/Title.astro";
 import zennMarkdownToHtml from "zenn-markdown-html";
 import { Blog } from "@components/Blog";
-import type { MarkdownOptions } from "zenn-markdown-html/lib/types";
-import { slugifyStr } from "@utils/slugify";
 
 // build時にそのまま使うとエラーになるため修正
-type MarkdownHtml = (text: string, options?: MarkdownOptions) => string;
+type MarkdownHtml = typeof zennMarkdownToHtml;
 type MarkdownHtmlAtBuild = { default: MarkdownHtml };
 
 let markdownHtml: MarkdownHtml = zennMarkdownToHtml;
@@ -26,7 +24,17 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const { title, author, description, ogImage, canonicalURL, pubDatetime, tags } = post.data;
+const {
+  title,
+  author,
+  description,
+  ogImage,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  tags,
+} = post.data;
+
 const html = markdownHtml(post.body, {
   embedOrigin: "https://embed.zenn.studio",
 });
@@ -34,24 +42,27 @@ const html = markdownHtml(post.body, {
 // const { Content } = await post.render();
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
-const ogUrl = new URL(
-  ogImageUrl ?? `/posts/${slugifyStr(title)}.jpg`,
-  Astro.url.origin
-).href;
+const ogUrl = new URL(ogImageUrl ?? `/posts/${post.slug}.png`, Astro.url.origin)
+  .href;
+
+const layoutProps = {
+  title,
+  author,
+  description,
+  pubDatetime,
+  modDatetime,
+  canonicalURL,
+  ogImage: ogUrl,
+  scrollSmooth: true,
+};
 ---
 
-<Layout
-  title={title}
-  author={author}
-  description={description}
-  ogImage={ogUrl}
-  canonicalURL={canonicalURL}
->
+<Layout {...layoutProps}>
   <Header />
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
       class="focus-outline mb-2 mt-8 flex text-[#fff] hover:opacity-75"
-      onclick="history.back()"
+      onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
       <svg xmlns="http://www.w3.org/2000/svg"
         ><path
@@ -62,7 +73,12 @@ const ogUrl = new URL(
   </div>
   <main id="main-content">
     <div class="sm:px-4">
-      <Title title={title} datetime={pubDatetime} tags={tags} />
+      <Title
+        title={title}
+        pubDatetime={pubDatetime}
+        modDatetime={modDatetime}
+        tags={tags}
+      />
       <Share title={title} url={Astro.url.toString()} />
     </div>
     <Blog html={html} />
@@ -76,7 +92,77 @@ const ogUrl = new URL(
   }
 </style>
 
-<script>
+<script is:inline>
   // KaTex support
   await import("zenn-embed-elements");
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = true;
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code.innerText;
+
+      await navigator.clipboard.writeText(text);
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+  document.addEventListener("astro:after-swap", attachCopyButtons);
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+  document.addEventListener("astro:after-swap", backToTop);
 </script>

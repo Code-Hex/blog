@@ -92,10 +92,12 @@ const layoutProps = {
   }
 </style>
 
-<script is:inline>
+<script>
   // KaTex support
   await import("zenn-embed-elements");
+</script>
 
+<script is:inline>
   /** Attaches links to headings in the document,
    *  allowing sharing of sections easily */
   function addHeadingLinks() {
@@ -116,7 +118,9 @@ const layoutProps = {
    * allowing users to copy code easily. */
   function attachCopyButtons() {
     let copyButtonLabel = "Copy";
-    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+    let codeBlocks = Array.from(
+      document.querySelectorAll(".code-block-container")
+    );
 
     for (let codeBlock of codeBlocks) {
       let wrapper = document.createElement("div");

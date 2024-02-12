@@ -1,5 +1,5 @@
 import satori, { type SatoriOptions } from "satori";
-import { Transformer } from "@napi-rs/image";
+import { Resvg } from "@resvg/resvg-js";
 import postOgImage from "./og-templates/post";
 import { type CollectionEntry } from "astro:content";
 
@@ -83,8 +83,13 @@ export async function loadGoogleFont({
   return fetch(fontUrl).then(res => res.arrayBuffer());
 }
 
+function svgBufferToPngBuffer(svg: string) {
+  const resvg = new Resvg(svg);
+  const pngData = resvg.render();
+  return pngData.asPng();
+}
+
 export async function generateOgImageForPost(post: CollectionEntry<"blog">) {
   const svg = await satori(postOgImage(post), options);
-  const trasformer = Transformer.fromSvg(svg);
-  return await trasformer.jpeg();
+  return svgBufferToPngBuffer(svg);
 }

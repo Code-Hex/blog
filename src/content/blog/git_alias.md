@@ -2,7 +2,7 @@
 title: オレのおすすめ Git エイリアス 5 選
 author: codehex
 pubDatetime: 2022-06-06T04:06:31Z
-postSlug: git_alias
+slug: git_alias
 featured: false
 draft: false
 tags:

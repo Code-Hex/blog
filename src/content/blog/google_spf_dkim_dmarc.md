@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2021-12-19T22:56:58+09:00
 title: 取得したドメインで送信するメールの信頼性を上げる方法
-postSlug: google_spf_dkim_dmarc
+slug: google_spf_dkim_dmarc
 featured: true
 draft: false
 tags:

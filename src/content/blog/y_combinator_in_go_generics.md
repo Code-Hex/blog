@@ -1,7 +1,7 @@
 ---
 title: Go Generics で実装する Y コンビネータ、再帰関数を汎用的にメモ化する
 pubDatetime: 2022-06-13T10:47:25+09:00
-postSlug: y_combinator_in_go_generics
+slug: y_combinator_in_go_generics
 featured: false
 draft: false
 tags:

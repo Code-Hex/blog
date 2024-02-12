@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-11-25T19:00:00+09:00
 title: ISUCON 13 参加した
-postSlug: isucon13
+slug: isucon13
 featured: false
 draft: false
 tags:

@@ -1,7 +1,7 @@
 ---
 title: ZennのMarkdown記法一覧
 pubDatetime: 2000-01-01T00:00:00+09:00
-postSlug: guide
+slug: guide
 featured: false
 draft: false
 tags:

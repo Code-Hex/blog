@@ -1,7 +1,7 @@
 ---
 title: RACI を使った責務の明確化
 pubDatetime: 2019-08-06T00:11:20
-postSlug: raci_matrix
+slug: raci_matrix
 featured: false
 draft: false
 tags:

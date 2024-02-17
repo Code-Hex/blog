@@ -54,7 +54,7 @@ https://developers.cloudflare.com/workers/runtime-apis/performance/
 
 ### rakulangで実装する! RubyVM
 
-大学の後輩の[@AnaTofuZ](https://twitter.com/AnaTofuZ)発表。Ruby VM を [Raku](https://raku.org/) (旧 Perl6) を使って実装していく話でした。`InstructionSequence` クラスを利用すると人間が読める状態で出力してくれるので、それに合わせて処理を記述していったそうです。
+大学の後輩の [@AnaTofuZ](https://twitter.com/AnaTofuZ) 発表。Ruby VM を [Raku](https://raku.org/) (旧 Perl6) を使って実装していく話でした。`InstructionSequence` クラスを利用すると人間が読める状態で出力してくれるので、それに合わせて処理を記述していったそうです。
 
 なぜ、バイトコードではなく pretty print されたものを利用して実装しているかの説明として、最初からバイトコードを想定したコードを書くのではなく、やりやすい部分から手をつけていけると自分のモチベーション維持に繋がって開発が続けられるからとのことでした。これには凄く納得があって、自分の今後の開発スタイルにも影響しそうでした。
 
@@ -72,7 +72,7 @@ https://developers.cloudflare.com/workers/runtime-apis/performance/
 
 ![](https://storage.googleapis.com/zenn-user-upload/d2b351e559d1-20240215.jpeg)
 
-メルカリ時代の同期の[@upamune](https://twitter.com/upamune)だったり、入社した時の CTO だった [@sotarok](https://twitter.com/sotarok) さん、元チームメイトの [@nozo_moto](https://twitter.com/nozo_moto) さんといった久しぶりに話せた人が多くて楽しかったです。
+メルカリ時代の同期の [@upamune](https://twitter.com/upamune) だったり、入社した時の CTO だった [@sotarok](https://twitter.com/sotarok) さん、元チームメイトの [@nozo_moto](https://twitter.com/nozo_moto) さんといった久しぶりに話せた人が多くて楽しかったです。
 
 懇親会でも Cloudflare Workers についてだったり、[Okinawa.pm](https://okinawa.pm.org/) として各地の Perl コミュニティで交流した時に出会った方々とも久しぶりに話せたのが本当に嬉しかったです。
 

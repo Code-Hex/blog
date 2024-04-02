@@ -5,6 +5,7 @@ slug: notahotel_ideathon_2023
 featured: true
 draft: false
 tags:
+  - notahotel
   - chatgpt
   - slack
 description: NOT A HOTEL 社内イベントとしてアイディアソンを開催し、その運営をしながら CTO の @okbtks と ChatGPT Slack ボットを開発した楽しい話

@@ -1,5 +1,7 @@
+import satori from "satori";
 import { SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
+import loadGoogleFonts, { type FontOptions } from "../loadGoogleFont";
 
 const CodeHex = () => (
   <svg
@@ -45,9 +47,9 @@ const CodeHex = () => (
   </svg>
 );
 
-export default (post: CollectionEntry<"blog">) => {
+export default async (post: CollectionEntry<"blog">) => {
   const { title, pubDatetime } = post.data;
-  return (
+  return satori(
     <div
       tw="w-full h-full flex flex-col justify-between text-gray-100 bg-gray-900"
       style={{ padding: "60pt 80pt 40pt 80pt" }}
@@ -73,6 +75,12 @@ export default (post: CollectionEntry<"blog">) => {
         </div>
         <CodeHex />
       </div>
-    </div>
+    </div>,
+    {
+      width: 1200,
+      height: 630,
+      embedFont: true,
+      fonts: (await loadGoogleFonts()) as FontOptions[],
+    }
   );
 };

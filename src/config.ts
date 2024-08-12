@@ -3,10 +3,12 @@ import type { Site, SocialObjects } from "./types";
 export const SITE: Site = {
   website: "https://blog.codehex.dev/",
   author: "codehex",
+  profile: "https://codehex.dev/",
   desc: "プログラミングやガジェッド、思ったことを雑に書いていくブログです。",
   title: "アルパカ三銃士",
   ogImage: "main-ogp.png",
   lightAndDarkMode: false,
+  postPerIndex: 4,
   postPerPage: 3,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };

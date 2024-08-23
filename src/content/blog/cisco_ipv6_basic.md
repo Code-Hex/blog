@@ -242,4 +242,3 @@ R1 では IPv6 アドレスを手動で設定し、R2 では自動設定を行�
 これらの手順を行った際にパケットキャプチャをしていたので、そのリンクを貼っておく。
 
 [ipv6.pcapng](https://drive.google.com/file/d/1Jst8S5KqAN7GEApxH7xWZW3I8his8nYZ/view?usp=drive_link)
-

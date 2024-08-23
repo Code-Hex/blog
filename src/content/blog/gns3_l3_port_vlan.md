@@ -343,4 +343,3 @@ trace to 192.168.20.110, 8 hops max, press Ctrl+C to stop
 ```
 
 これで今回の実験は終わり。
-

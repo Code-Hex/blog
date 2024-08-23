@@ -45,7 +45,7 @@ SW02については：
 この設定の下では、SW02のポートはVLAN 1のアクセスポートとして起動し、SW01のポートはVLAN 1のネイティブVLANを持つトランクであるため、理論的には機能するはずです。つまり、SW02はタグなしフレームをSW01に送信し、SW01はそれをVLAN 1内で転送します。逆にSW01もタグなしフレームをVLAN 1に送り、双方向のフレームの流れが生じます。理論的には正しいですが、実際にはそうなりません。なぜでしょうか？見ていきましょう。
 
 ```plaintext
-SW02#show int gi0/0 switchport 
+SW02#show int gi0/0 switchport
 Name: Gi0/0
 Switchport: Enabled
 Administrative Mode: dynamic auto
@@ -57,8 +57,8 @@ Access Mode VLAN: 1 (default)
 Trunking Native Mode VLAN: 1 (default)
 Administrative Native VLAN tagging: enabled
 Voice VLAN: none
-Administrative private-vlan host-association: none 
-Administrative private-vlan mapping: none 
+Administrative private-vlan host-association: none
+Administrative private-vlan mapping: none
 Administrative private-vlan trunk native VLAN: none
 Administrative private-vlan trunk Native VLAN tagging: enabled
 Administrative private-vlan trunk encapsulation: dot1q
@@ -116,7 +116,7 @@ Gi0/0       1
 SW02は次のように不整合なポートを持っていることを確認できます：
 
 ```plaintext
-SW02#show span inconsistentports 
+SW02#show span inconsistentports
 Name                 Interface                Inconsistency
 -------------------- ------------------------ ------------------
 VLAN0001             GigabitEthernet0/0       Port Type Inconsistent
@@ -127,9 +127,9 @@ Number of inconsistent ports (segments) in the system : 1
 
 ```plaintext
 SW02#show int gi0/0
-GigabitEthernet0/0 is up, line protocol is up (connected) 
+GigabitEthernet0/0 is up, line protocol is up (connected)
   Hardware is iGbE, address is 5254.0002.2f7d (bia 5254.0002.2f7d)
-  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec, 
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
      reliability 255/255, txload 1/255, rxload 1/255
   Encapsulation ARPA, loopback not set
   Keepalive set (10 sec)
@@ -145,7 +145,7 @@ GigabitEthernet0/0 is up, line protocol is up (connected)
   5 minute output rate 0 bits/sec, 0 packets/sec
      733 packets input, 52654 bytes, 0 no buffer
      Received 729 broadcasts (729 multicasts)
-     0 runts, 0 giants, 0 throttles 
+     0 runts, 0 giants, 0 throttles
      0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
      0 watchdog, 729 multicast, 0 pause input
      396 packets output, 32042 bytes, 0 underruns
@@ -162,7 +162,7 @@ STPの詳細を見ると、以下のように確認できます：
 SW02#show span int gi0/0
 Vlan                Role Sts Cost      Prio.Nbr Type
 ------------------- ---- --- --------- -------- --------------------------------
-VLAN0001            Desg BKN*4         128.1    P2p *TYPE_Inc 
+VLAN0001            Desg BKN*4         128.1    P2p *TYPE_Inc
 SW02#show span int gi0/0 det
  Port 1 (GigabitEthernet0/0) of VLAN0001 is broken  (Port Type Inconsistent)
    Port path cost 4, Port priority 128, Port Identifier 128.1.
@@ -207,7 +207,7 @@ SW01(config-if)#no switchport nonegotiate
 SW02のポートはどうなるでしょうか？
 
 ```plaintext
-SW02#show int gi0/0 switchport 
+SW02#show int gi0/0 switchport
 Name: Gi0/0
 Switchport: Enabled
 Administrative Mode: dynamic auto
@@ -219,8 +219,8 @@ Access Mode VLAN: 1 (default)
 Trunking Native Mode VLAN: 1 (default)
 Administrative Native VLAN tagging: enabled
 Voice VLAN: none
-Administrative private-vlan host-association: none 
-Administrative private-vlan mapping: none 
+Administrative private-vlan host-association: none
+Administrative private-vlan mapping: none
 Administrative private-vlan trunk native VLAN: none
 Administrative private-vlan trunk Native VLAN tagging: enabled
 Administrative private-vlan trunk encapsulation: dot1q
@@ -239,7 +239,7 @@ Appliance trust: none
 それがトランクポートに変わりました！一方が `dynamic auto` で、もう一方がトランクに設定されているため、SW02でトランクが形成されました。これにより不整合が解消されました：
 
 ```plaintext
-SW02#show span inconsistentports 
+SW02#show span inconsistentports
 Name                 Interface                Inconsistency
 -------------------- ------------------------ ------------------
 Number of inconsistent ports (segments) in the system : 0
@@ -251,9 +251,9 @@ Number of inconsistent ports (segments) in the system : 0
 SW02#show span int gi0/0
 Vlan                Role Sts Cost      Prio.Nbr Type
 ------------------- ---- --- --------- -------- --------------------------------
-VLAN0001            Root FWD 4         128.1    P2p 
+VLAN0001            Root FWD 4         128.1    P2p
 SW02#show span int gi0/0 det
- Port 1 (GigabitEthernet0/0) of VLAN0001 is root forwarding 
+ Port 1 (GigabitEthernet0/0) of VLAN0001 is root forwarding
    Port path cost 4, Port priority 128, Port Identifier 128.1.
    Designated root has priority 1, address 5254.001a.aa98
    Designated bridge has priority 1, address 5254.001a.aa98
@@ -285,11 +285,10 @@ SW01のログには次のようなメッセージが表示されます：
 
 ![](https://lostintransit.se/wp-content/uploads/2023/12/SW02_BPDU_2.png)
 
-
 SW01はVLAN1とVLAN10を矛盾しているのでブロックしています：
 
 ```plaintext
-SW01#show span inconsistentports 
+SW01#show span inconsistentports
 Name                 Interface                Inconsistency
 -------------------- ------------------------ ------------------
 VLAN0001             GigabitEthernet0/0       Port VLAN ID Mismatch
@@ -303,10 +302,10 @@ Number of inconsistent ports (segments) in the system : 2
 SW01#show span int gi0/0
 Vlan                Role Sts Cost      Prio.Nbr Type
 ------------------- ---- --- --------- -------- --------------------------------
-VLAN0001            Desg BKN*4         128.1    P2p *PVID_Inc 
-VLAN0010            Desg BKN*4         128.1    P2p *PVID_Inc 
-VLAN0020            Desg FWD 4         128.1    P2p 
-VLAN0030            Desg FWD 4         128.1    P2p 
+VLAN0001            Desg BKN*4         128.1    P2p *PVID_Inc
+VLAN0010            Desg BKN*4         128.1    P2p *PVID_Inc
+VLAN0020            Desg FWD 4         128.1    P2p
+VLAN0030            Desg FWD 4         128.1    P2p
 SW01#show span int gi0/0 det
  Port 1 (GigabitEthernet0/0) of VLAN0001 is broken  (Port VLAN ID Mismatch)
    Port path cost 4, Port priority 128, Port Identifier 128.1.
@@ -326,7 +325,7 @@ SW01#show span int gi0/0 det
    Number of transitions to forwarding state: 1
    Link type is point-to-point by default
    BPDU: sent 219, received 0
- Port 1 (GigabitEthernet0/0) of VLAN0020 is designated forwarding 
+ Port 1 (GigabitEthernet0/0) of VLAN0020 is designated forwarding
    Port path cost 4, Port priority 128, Port Identifier 128.1.
    Designated root has priority 20, address 5254.001a.aa98
    Designated bridge has priority 20, address 5254.001a.aa98
@@ -335,7 +334,7 @@ SW01#show span int gi0/0 det
    Number of transitions to forwarding state: 1
    Link type is point-to-point by default
    BPDU: sent 219, received 0
- Port 1 (GigabitEthernet0/0) of VLAN0030 is designated forwarding 
+ Port 1 (GigabitEthernet0/0) of VLAN0030 is designated forwarding
    Port path cost 4, Port priority 128, Port Identifier 128.1.
    Designated root has priority 30, address 5254.001a.aa98
    Designated bridge has priority 30, address 5254.001a.aa98

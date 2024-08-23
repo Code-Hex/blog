@@ -65,7 +65,6 @@ Switch1(config-if)#switchport access vlan 20
 Switch1(config-if)#exit
 ```
 
-
 ルーターと繋げている Et0/0 では trunk VLAN を有効にしていく。
 
 ```
@@ -199,4 +198,3 @@ trace to 192.168.20.10, 8 hops max, press Ctrl+C to stop
 Router on a stick は L2 スイッチとルーターを組み合わせて VLAN 間の通信を実現する構成である。L2 スイッチとルーターの特性をうまく利用して、異なる VLAN 間の通信を実現している。
 
 この記事では GNS3 上で Router on a stick を構築し、PC1 と PC2 で通信ができることを確認した。
-

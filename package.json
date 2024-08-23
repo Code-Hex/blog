@@ -1,6 +1,6 @@
 {
   "name": "astro-paper",
-  "version": "4.3.0",
+  "version": "4.3.2",
   "private": false,
   "scripts": {
     "dev": "astro dev",
@@ -14,10 +14,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/check": "^0.8.2",
+    "@astrojs/check": "^0.9.1",
     "@astrojs/rss": "^4.0.7",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^4.12.2",
+    "astro": "^4.13.0",
     "fuse.js": "^7.0.0",
     "github-slugger": "^2.0.0",
     "remark-collapse": "^0.1.2",
@@ -29,7 +29,7 @@
     "zenn-markdown-html": "^0.1.154"
   },
   "devDependencies": {
-    "@astrojs/react": "^3.6.0",
+    "@astrojs/react": "^3.6.1",
     "@astrojs/sitemap": "^3.1.6",
     "@astrojs/tailwind": "^5.1.0",
     "@tailwindcss/typography": "^0.5.13",

@@ -6,7 +6,7 @@ export const Blog: FC<{ html: string }> = ({ html }) => {
     <article
       id="article"
       role="article"
-      className="mx-auto mt-8 max-w-3xl px-4"
+      className="mx-auto mt-2 max-w-3xl px-4"
     >
       <div
         className="znc"

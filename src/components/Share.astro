@@ -1,8 +1,7 @@
 ---
 import LinkButton from "./LinkButton.astro";
-import type { ShareIcons, ShareMedia } from "../types";
 
-const shareIcons: ShareIcons = {
+const shareIcons = {
   Facebook: `<svg
     xmlns="http://www.w3.org/2000/svg"
     class="icon-share-tabler"
@@ -30,7 +29,31 @@ const shareIcons: ShareIcons = {
   >
     <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0v3h1.5C8.974 3 15 9.026 15 16.5V18h3v-1.5C18 7.406 10.594 0 1.5 0H0Zm0 6v3h1.5C5.66 9 9 12.34 9 16.5V18h3v-1.5C12 10.72 7.28 6 1.5 6H0Zm0 9.375a2.624 2.624 0 1 1 5.249-.001A2.624 2.624 0 0 1 0 15.375Z"/>
   </svg>`,
-};
+} as const;
+
+const getShareLinks = (title: string, url: string) =>
+  [
+    {
+      name: "Facebook",
+      href: `https://www.facebook.com/sharer.php?u=${url}&t=${title}`,
+      linkTitle: "Share this codehex blog post on Facebook",
+    },
+    {
+      name: "Twitter",
+      href: `https://twitter.com/share?text=${title}&url=${url}`,
+      linkTitle: "Share this codehex blog post on Twitter",
+    },
+    {
+      name: "LinkedIn",
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+      linkTitle: "Share this codehex blog post on LinkedIn",
+    },
+    {
+      name: "RSS",
+      href: `/rss.xml`,
+      linkTitle: "RSS Feed",
+    },
+  ] as const;
 
 export interface Props {
   title: string;
@@ -44,28 +67,7 @@ const { title, url } = Astro.props;
   <p class="share-this-page">Share this page</p>
   <div class="share-icons">
     {
-      [
-        {
-          name: "Facebook",
-          href: `https://www.facebook.com/sharer.php?u=${url}&t=${title}`,
-          linkTitle: "Share this codehex blog post on Facebook",
-        },
-        {
-          name: "Twitter",
-          href: `https://twitter.com/share?text=${title}&url=${url}`,
-          linkTitle: "Share this codehex blog post on Twitter",
-        },
-        {
-          name: "LinkedIn",
-          href: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-          linkTitle: "Share this codehex blog post on LinkedIn",
-        },
-        {
-          name: "RSS",
-          href: `/rss.xml`,
-          linkTitle: "RSS Feed",
-        },
-      ].map(social => (
+      getShareLinks(title, url).map(social => (
         <div>
           <LinkButton
             href={social.href}
@@ -73,7 +75,7 @@ const { title, url } = Astro.props;
             title={social.linkTitle}
             target="_blank"
           >
-            <Fragment set:html={shareIcons[social.name as ShareMedia]} />
+            <Fragment set:html={shareIcons[social.name]} />
           </LinkButton>
         </div>
       ))

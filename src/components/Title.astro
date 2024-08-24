@@ -8,9 +8,10 @@ export interface Props {
   tags: string[];
   pubDatetime: string | Date;
   modDatetime: string | Date | undefined | null;
+  readingTime: string | undefined;
 }
 
-const { title, tags, pubDatetime, modDatetime } = Astro.props;
+const { title, tags, pubDatetime, modDatetime, readingTime } = Astro.props;
 ---
 
 <div class="single-header">
@@ -18,7 +19,12 @@ const { title, tags, pubDatetime, modDatetime } = Astro.props;
   <ul class="mb-4">
     {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
   </ul>
-  <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="sm" />
+  <Datetime
+    pubDatetime={pubDatetime}
+    modDatetime={modDatetime}
+    readingTime={readingTime}
+    size="sm"
+  />
 </div>
 <style>
   .single-header {

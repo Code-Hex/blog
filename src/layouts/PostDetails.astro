@@ -34,6 +34,8 @@ const {
   canonicalURL,
   pubDatetime,
   modDatetime,
+  gitCreatedAt,
+  gitLastModified,
   tags,
 } = post.data;
 
@@ -78,8 +80,8 @@ const layoutProps = {
     <div class="sm:px-4">
       <Title
         title={title}
-        pubDatetime={pubDatetime}
-        modDatetime={modDatetime}
+        pubDatetime={gitCreatedAt ?? pubDatetime}
+        modDatetime={gitLastModified ?? modDatetime}
         readingTime={readingTime}
         tags={tags}
       />

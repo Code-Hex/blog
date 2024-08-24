@@ -23,6 +23,8 @@ const blog = defineCollection({
       description: z.string(),
       canonicalURL: z.string().optional(),
       readingTime: z.string().optional(), // See remark-reading-time.ts in utils directory
+      gitCreatedAt: z.date().optional(), // See remark-git-log-time.ts in utils directory
+      gitLastModified: z.date().optional().nullable(), // See remark-git-log-time.ts in utils directory
     }),
 });
 

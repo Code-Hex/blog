@@ -43,9 +43,8 @@ WLAN（無線LAN）は電波を利用して通信を行うため配線は不要�
 ![](https://storage.googleapis.com/zenn-user-upload/e6b811099321-20240824.png)
 
 - イーサネットで広く使用される
-    - 初期のイーサネット（10BASE-T, 100BASE-TX）：
-    - **半二重通信**
-    - 現在のイーサネット（1000BASE-T以降）：全二重通信が一般的
+    - 初期のイーサネット（10BASE-T, 100BASE-TX）：**半二重通信**
+    - 現在のイーサネット（1000BASE-T以降）：**全二重通信が一般的**
         - 同じケーブルでも、ネットワーク機器の設定によって、半二重/全二重の切り替えが可能な場合がある
 
 **光ファイバーケーブル**
@@ -76,7 +75,6 @@ WLAN（無線LAN）は電波を利用して通信を行うため配線は不要�
 
 ![](https://storage.googleapis.com/zenn-user-upload/f214e626e632-20240824.png)
 *RS-232*
-
 
 - RS-232、RS-422 であれば基本的には全二重通信
 - RS-485 は RS-422 の上位規格
@@ -144,6 +142,7 @@ CSMA/CA with RTS/CTS の仕組み：
     - ESSID（または単に SSID）は ESS 全体を識別するために使用される
 
 ```mermaid
+%%{init:{'theme':'dark'}}%%
 graph TD
     subgraph ESS[Extended Service Set]
         subgraph DS[Distribution System]
@@ -287,6 +286,7 @@ CAPWAP は DTLS（Datagram Transport Layer Security）を使用して、WLC と 
 [^1]: クライアントと AP 間のデータは暗号化されているため、CAPWAP のデータチャネルで暗号化しなくても十分とのこと。
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#2D3436', 'primaryColor': '#4EAEC9', 'secondaryColor': '#323D4D', 'tertiaryColor': '#4B5A6C', 'mainBkg': '#2D3436', 'secondBkg': '#323D4D', 'lineColor': '#81B1DB', 'textColor': '#ECECFD' }}}%%
 graph LR
     CL[クライアント] -- WPA2/WPA3暗号化 --> AP[アクセスポイント]
     AP -- DTLS暗号化 --> CC[制御チャネル]
@@ -299,11 +299,11 @@ graph LR
     DC
     end
 
-    style CL fill:#ffb,stroke:#333,stroke-width:2px
-    style AP fill:#f9f,stroke:#333,stroke-width:2px
-    style WLC fill:#bbf,stroke:#333,stroke-width:2px
-    style CC fill:#bfb,stroke:#333,stroke-width:2px
-    style DC fill:#fbb,stroke:#333,stroke-width:2px
+    style CL fill:#4B5A6C,stroke:#81B1DB,stroke-width:2px,color:#ECECFD
+    style AP fill:#323D4D,stroke:#81B1DB,stroke-width:2px,color:#ECECFD
+    style WLC fill:#323D4D,stroke:#81B1DB,stroke-width:2px,color:#ECECFD
+    style CC fill:#4B5A6C,stroke:#81B1DB,stroke-width:2px,color:#ECECFD
+    style DC fill:#4B5A6C,stroke:#81B1DB,stroke-width:2px,color:#ECECFD
 ```
 
 ### FlexConnect（Cisco 開発）

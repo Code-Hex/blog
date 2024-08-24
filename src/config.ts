@@ -15,7 +15,7 @@ export const SITE: Site = {
 
 export const LOCALE = {
   lang: "ja", // html lang code. Set this empty and default will be "ja"
-  langTag: ["ja-JP", "en-EN"], // set to [] to use the environment default
+  langTag: ["en-EN"], // set to [] to use the environment default
 } as const;
 
 export const LOGO_IMAGE = {

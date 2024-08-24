@@ -30,6 +30,7 @@ const {
   author,
   description,
   ogImage,
+  readingTime,
   canonicalURL,
   pubDatetime,
   modDatetime,
@@ -79,6 +80,7 @@ const layoutProps = {
         title={title}
         pubDatetime={pubDatetime}
         modDatetime={modDatetime}
+        readingTime={readingTime}
         tags={tags}
       />
       <Share title={title} url={Astro.url.toString()} />

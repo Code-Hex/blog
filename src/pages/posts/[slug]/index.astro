@@ -15,14 +15,20 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
   const postsWithReadingTime = await getPostsWithRT(posts);
 
+  // Blog contents
   const postResult = postsWithReadingTime.map(post => ({
     params: { slug: post.slug },
     props: { post },
   }));
 
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
+  // Calculates for pagination (included non-blog posts)
+  const zennPosts = await getCollection("zenn");
+
+  const pagePaths = getPageNumbers(posts.length + zennPosts.length).map(
+    pageNum => ({
+      params: { slug: String(pageNum) },
+    })
+  );
 
   return [...postResult, ...pagePaths];
 }
@@ -31,8 +37,9 @@ const { slug } = Astro.params;
 const { post } = Astro.props;
 
 const posts = await getCollection("blog");
+const zennPosts = await getCollection("zenn");
 
-const sortedPosts = getSortedPosts(posts);
+const sortedPosts = getSortedPosts([...posts, ...zennPosts]);
 
 const pagination = getPagination({
   posts: sortedPosts,

@@ -26,4 +26,16 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+const zenn = defineCollection({
+  type: "content_layer",
+  loader: glob({ pattern: "**/*.json", base: "./src/content/blog" }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      link: z.string(),
+      pubDatetime: z.string().transform(v => new Date(v)),
+      modDatetime: z.string().optional(),
+    }),
+});
+
+export const collections = { blog, zenn };

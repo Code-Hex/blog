@@ -2,8 +2,8 @@ import { LOCALE } from "@config";
 
 interface DatetimesProps {
   pubDatetime: string | Date;
-  modDatetime: string | Date | undefined | null;
-  readingTime: string | undefined;
+  modDatetime?: string | Date | undefined | null;
+  readingTime?: string | undefined;
 }
 
 export interface Props extends DatetimesProps {
@@ -68,8 +68,12 @@ const FormattedDatetime = ({
   return (
     <>
       <time dateTime={myDatetime.toISOString()}>{date}</time>
-      <span aria-hidden="true"> · </span>
-      <span className="text-nowrap opacity-80">{readingTime}</span>
+      {readingTime && (
+        <>
+          <span aria-hidden="true"> · </span>
+          <span className="text-nowrap opacity-80">{readingTime}</span>
+        </>
+      )}
     </>
   );
 };

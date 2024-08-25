@@ -5,7 +5,7 @@ import type { FC } from "react";
 
 const Collection: FC<{ collection: Exclude<CollectionKey, "blog"> }> = () => {
   return (
-    <div className="flex flex-row items-center space-x-1 opacity-80">
+    <div className="flex flex-row items-center space-x-2 opacity-80">
       {/* https://simpleicons.org/?q=zenn */}
       <svg
         viewBox="0 0 24 24"
@@ -35,11 +35,11 @@ export default function ExternalLink({
     <li className="my-6">
       <a
         href={link}
-        className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+        className="inline-block w-full text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <div className="flex flex-row items-start">
+        <div className="flex flex-row items-start justify-between sm:justify-normal">
           <h2 {...headerProps}>{title}</h2>
           {/* https://icones.js.org/collection/carbon?s=arrow&icon=carbon:arrow-up-right */}
           <svg

@@ -30,7 +30,7 @@ jobs:
         uses: gr2m/create-or-update-pull-request-action@v1.x
         if: ${{ steps.git-diff.outputs.diff != '' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           title: "🚧 🤖📯 Updated Zenn Contents"
           body: |

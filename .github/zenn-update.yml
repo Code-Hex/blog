@@ -1,0 +1,42 @@
+
+on:
+  schedule:
+    # https://crontab.guru/every-3-hours UTC
+    # 日本時間 9:00 ~ 25:00 の間で 3h おきに実行
+    - cron: '0 0-16/3 * * *'
+  workflow_dispatch: {}
+name: Update Zenn Contents
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: git checkout json-update || true
+      - run: npm run zenn-feed
+      - name: Check contents diff
+        id: git-diff
+        run: |
+          {
+            echo 'diff<<EOF'
+            git diff --name-only -- src/content/zenn | cat
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+      - name: diff result
+        run: echo "${{ steps.git-diff.outputs.diff }}"
+      - name: create pull request
+        uses: gr2m/create-or-update-pull-request-action@v1.x
+        if: ${{ steps.git-diff.outputs.diff != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          title: "🚧 🤖📯 Updated Zenn Contents"
+          body: |
+            Updated zenn contents 👋🤖
+          branch: "json-update"
+          author: "Kei Kamikawa <code-hex@users.noreply.github.com>"
+          auto-merge: merge
+          commit-message: "[auto] updated zenn contents"
+          labels: maintenance

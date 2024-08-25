@@ -14,7 +14,7 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: git checkout json-update || true
+      - run: git checkout zenn-update || true
       - run: npm run zenn-feed
       - name: Check contents diff
         id: git-diff
@@ -35,7 +35,7 @@ jobs:
           title: "🚧 🤖📯 Updated Zenn Contents"
           body: |
             Updated zenn contents 👋🤖
-          branch: "json-update"
+          branch: "zenn-update"
           author: "Kei Kamikawa <code-hex@users.noreply.github.com>"
           auto-merge: merge
           commit-message: "[auto] updated zenn contents"

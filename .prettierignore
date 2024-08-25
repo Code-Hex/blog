@@ -10,3 +10,4 @@
 !.prettierrc
 !eslint.config.mjs
 !README.md
+src/content/zenn/*.json

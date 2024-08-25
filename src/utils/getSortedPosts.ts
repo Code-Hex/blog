@@ -1,9 +1,14 @@
 import type { CollectionEntry } from "astro:content";
 import postFilter from "./postFilter";
 
-const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
+const getSortedPosts = (posts: CollectionEntry<"blog" | "zenn">[]) => {
   return posts
-    .filter(postFilter)
+    .filter(v => {
+      if (v.collection === "blog") {
+        return postFilter(v);
+      }
+      return true;
+    })
     .sort(
       (a, b) =>
         Math.floor(

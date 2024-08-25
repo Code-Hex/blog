@@ -7,11 +7,12 @@ import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import type { CollectionEntry } from "astro:content";
 import Pagination from "@components/Pagination.astro";
+import ExternalLink from "@components/ExternalLink";
 
 export interface Props {
   currentPage: number;
   totalPages: number;
-  paginatedPosts: CollectionEntry<"blog">[];
+  paginatedPosts: CollectionEntry<"blog" | "zenn">[];
 }
 
 const { currentPage, totalPages, paginatedPosts } = Astro.props;
@@ -22,9 +23,13 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
       {
-        paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
-        ))
+        paginatedPosts.map(post => {
+          if (post.collection === "blog") {
+            const { data, slug } = post;
+            return <Card href={`/posts/${slug}/`} frontmatter={data} />;
+          }
+          return <ExternalLink {...post} />;
+        })
       }
     </ul>
   </Main>

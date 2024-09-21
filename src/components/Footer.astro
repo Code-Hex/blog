@@ -16,11 +16,15 @@ const { noMarginTop = false } = Astro.props;
   <div class="footer-wrapper">
     <Socials centered />
     <div class="copyright-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" class="stroke-[8px] h-4 w-4">
+        <path fill="none" stroke="currentColor" d="M15 8l14.729 14.382L15 35.367"></path>
+      </svg>
       <a
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
         target="_blank">CC BY-NC-SA 4.0</a
       >
       <span>&#169; {currentYear} codehex</span>
+      <span class="blink-cursor"></span>
     </div>
   </div>
 </footer>
@@ -40,5 +44,20 @@ const { noMarginTop = false } = Astro.props;
   }
   .copyright-wrapper {
     @apply my-2 flex flex-col items-center whitespace-nowrap sm:flex-row sm:space-x-2;
+  }
+  .blink-cursor {
+    @apply inline-block w-2 h-4 bg-[#f472b6] mt-0.5;
+    animation: cursor 1s infinite;
+  }
+  @keyframes cursor {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 </style>

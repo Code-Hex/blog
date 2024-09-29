@@ -6,7 +6,7 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
-  
+
   // Calculates for pagination (included non-blog posts)
   const zennPosts = await getCollection("zenn");
 

@@ -5,17 +5,16 @@ import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
-import type { CollectionEntry } from "astro:content";
 import Pagination from "@components/Pagination.astro";
 import ExternalLink from "@components/ExternalLink";
+import type { Page } from "astro";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-  currentPage: number;
-  totalPages: number;
-  paginatedPosts: CollectionEntry<"blog" | "zenn">[];
+  page: Page<CollectionEntry<"blog" | "zenn">>;
 }
 
-const { currentPage, totalPages, paginatedPosts } = Astro.props;
+const { page } = Astro.props;
 ---
 
 <Layout title={`Posts | ${SITE.title}`}>
@@ -23,7 +22,7 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
       {
-        paginatedPosts.map(post => {
+        page.data.map(post => {
           if (post.collection === "blog") {
             const { data, slug } = post;
             return <Card href={`/posts/${slug}/`} frontmatter={data} />;
@@ -34,11 +33,6 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
     </ul>
   </Main>
 
-  <Pagination
-    {currentPage}
-    {totalPages}
-    prevUrl={`/posts${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
-    nextUrl={`/posts/${currentPage + 1}/`}
-  />
-  <Footer noMarginTop={totalPages > 1} />
+  <Pagination {page} />
+  <Footer noMarginTop={page.total > 1} />
 </Layout>

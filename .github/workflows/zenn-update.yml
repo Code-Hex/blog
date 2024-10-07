@@ -1,9 +1,8 @@
-
 on:
   schedule:
     # https://crontab.guru/every-3-hours UTC
     # 日本時間 9:00 ~ 25:00 の間で 3h おきに実行
-    - cron: '0 0-16/3 * * *'
+    - cron: "0 0-16/3 * * *"
   workflow_dispatch: {}
 name: Update Zenn Contents
 jobs:

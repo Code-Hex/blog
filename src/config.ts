@@ -33,6 +33,12 @@ export const SOCIALS: SocialObjects = [
     active: true,
   },
   {
+    name: "BlueSky",
+    href: "https://bsky.app/profile/codehex.bsky.social",
+    linkTitle: `${SITE.author} on BlueSky`,
+    active: true,
+  },
+  {
     name: "Twitter",
     href: "https://twitter.com/codehex",
     linkTitle: `${SITE.author} on Twitter`,
@@ -42,6 +48,12 @@ export const SOCIALS: SocialObjects = [
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/codehex/",
     linkTitle: `${SITE.author} on LinkedIn`,
+    active: true,
+  },
+  {
+    name: "Credly",
+    href: "https://www.credly.com/users/codehex",
+    linkTitle: `${SITE.author} on Credly`,
     active: true,
   },
 ];

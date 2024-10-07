@@ -146,8 +146,8 @@ const great = () => {
 
 ```js
 const great = () => {
-  console.log("Awesome")
-}
+  console.log("Awesome");
+};
 ```
 
 ## diff のシンタックスハイライト

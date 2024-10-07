@@ -144,7 +144,7 @@ const great = () => {
 >
 > \```
 
-```js:fooBar.js
+```js
 const great = () => {
   console.log("Awesome")
 }
@@ -172,7 +172,7 @@ const great = () => {
 >
 > \```
 
-```diff js:fooBar.js
+```diff js
 @@ -4,6 +4,5 @@
 +    const foo = bar.baz([1, 2, 3]) + 1;
 -    let foo = bar.baz([1, 2, 3]);

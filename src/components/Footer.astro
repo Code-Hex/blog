@@ -30,8 +30,10 @@ const { noMarginTop = false } = Astro.props;
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
         target="_blank">CC BY-NC-SA 4.0</a
       >
-      <span>&#169; {currentYear} codehex</span>
-      <span class="blink-cursor"></span>
+      <div class="flex space-x-2 items-center">
+        <span>&#169; {currentYear} codehex</span>
+        <span class="blink-cursor"></span>
+      </div>
     </div>
   </div>
 </footer>

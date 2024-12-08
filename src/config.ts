@@ -11,6 +11,11 @@ export const SITE: Site = {
   postPerIndex: 4,
   postPerPage: 7,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
+  editPost: {
+    url: "https://github.com/Code-Hex/blog/edit/main/src/content/blog",
+    text: "Suggest Changes",
+    appendFilePath: true,
+  },
 };
 
 export const LOCALE = {

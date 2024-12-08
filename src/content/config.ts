@@ -23,6 +23,14 @@ const blog = defineCollection({
       description: z.string(),
       canonicalURL: z.string().optional(),
       readingTime: z.string().optional(), // See remark-reading-time.ts in utils directory
+      editPost: z
+        .object({
+          disabled: z.boolean().optional(),
+          url: z.string().optional(),
+          text: z.string().optional(),
+          appendFilePath: z.boolean().optional(),
+        })
+        .optional(),
     }),
 });
 

@@ -36,6 +36,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  editPost,
 } = post.data;
 
 const html = markdownHtml(post.body, {
@@ -93,6 +94,8 @@ const nextPost =
         modDatetime={modDatetime}
         readingTime={readingTime}
         tags={tags}
+        editPost={editPost}
+        postId={post.id}
       />
       <Share title={title} url={Astro.url.toString()} />
     </div>

@@ -64,6 +64,13 @@ module.exports = {
       mono: ["IBM Plex Mono", "monospace"],
     },
     // },
+    extend: {
+      stroke: {
+        skin: {
+          accent: withOpacity("--color-accent")
+        }
+      },
+    }
   },
   plugins: [require("@tailwindcss/typography")],
 };

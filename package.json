@@ -1,6 +1,6 @@
 {
   "name": "astro-paper",
-  "version": "4.5.1",
+  "version": "4.7.0",
   "private": false,
   "scripts": {
     "dev": "astro dev",
@@ -15,10 +15,10 @@
     "zenn-feed": "deno run --allow-read --allow-write --allow-net ./scripts/zenn-feed.ts"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.1",
-    "@astrojs/rss": "^4.0.7",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/rss": "^4.0.10",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^4.15.6",
+    "astro": "^4.16.17",
     "fuse.js": "^7.0.0",
     "lodash.kebabcase": "^4.1.1",
     "mdast-util-to-string": "^4.0.0",

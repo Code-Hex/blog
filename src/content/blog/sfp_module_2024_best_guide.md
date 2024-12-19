@@ -20,7 +20,9 @@ description: 2024年のSFPモジュールの種類、特徴、選び方を解説
 
 ## SFP モジュールとは？
 
-SFP について議論する前に、まず SFP とは何かを説明しましょう。SFP の「S」は Small（小型）、「F」は Form-factor（フォームファクター[^1]）、「P」は Pluggable（着脱可能）を表します。したがって、SFP = Small Form-factor Pluggable となります。これは当初、SFF委員会による INF-8074i[^2] 協定で定義されました。
+SFP について議論する前に、まず SFP とは何かを説明しましょう。
+
+SFP の「S」は Small（小型）、「F」は Form-factor（フォームファクター[^1]）、「P」は Pluggable（着脱可能）を表します。したがって、SFP = Small Form-factor Pluggable となります。これは当初、SFF委員会による INF-8074i[^2] 協定で定義されました。
 
 [^1]: 電子機器やコンピュータ部品の物理的なサイズ、形状、寸法、および接続方式の規格
 

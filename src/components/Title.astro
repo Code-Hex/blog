@@ -14,13 +14,16 @@ export interface Props {
   postId?: CollectionEntry<"blog">["id"];
 }
 
-const { title, tags, pubDatetime, modDatetime, readingTime, editPost, postId } = Astro.props;
+const { title, tags, pubDatetime, modDatetime, readingTime, editPost, postId } =
+  Astro.props;
 ---
 
 <div class="single-header">
-  <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+  <h1 transition:name={slugifyStr(title)} class="post-title inline-block">
+    {title}
+  </h1>
   <ul class="mb-4">
-    {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+    {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
   </ul>
   <Datetime
     pubDatetime={pubDatetime}

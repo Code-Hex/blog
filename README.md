@@ -165,7 +165,7 @@ If you have any suggestions/feedback, you can contact me via [my email](mailto:c
 
 ## 📜 License
 
-Licensed under the MIT License, Copyright © 2023
+Licensed under the MIT License, Copyright © 2025
 
 ---
 

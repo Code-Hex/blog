@@ -121,7 +121,8 @@
     @apply !bg-[#1b1b1f] !text-skin-base;
   }
 
-  .znc th, .znc td {
+  .znc th,
+  .znc td {
     @apply !border-[#fff];
   }
 

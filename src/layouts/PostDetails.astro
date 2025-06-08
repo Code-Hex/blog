@@ -1,13 +1,13 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
 import type { CollectionEntry } from "astro:content";
-import Share from "@components/Share.astro";
-import Title from "@components/Title.astro";
+import Share from "@/components/Share.astro";
+import Title from "@/components/Title.astro";
 import zennMarkdownToHtml from "zenn-markdown-html";
-import { Blog } from "@components/Blog";
-import { SITE } from "@config";
+import { Blog } from "@/components/Blog";
+import { SITE } from "@/config";
 
 // build時にそのまま使うとエラーになるため修正
 type MarkdownHtml = typeof zennMarkdownToHtml;
@@ -39,14 +39,14 @@ const {
   editPost,
 } = post.data;
 
-const html = markdownHtml(post.body, {
+const html = markdownHtml(post.body || "", {
   embedOrigin: "https://embed.zenn.studio",
 });
 
 // const { Content } = await post.render();
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
-const ogUrl = new URL(ogImageUrl ?? `/posts/${post.slug}.png`, Astro.url.origin)
+const ogUrl = new URL(ogImageUrl ?? `/posts/${post.id}.png`, Astro.url.origin)
   .href;
 
 const layoutProps = {
@@ -61,11 +61,11 @@ const layoutProps = {
 };
 
 /* ========== Prev/Next Posts ========== */
-const allPosts = posts.map(({ data: { title }, slug }) => ({
-  slug,
+const allPosts = posts.map(({ data: { title }, id }) => ({
+  slug: id,
   title,
 }));
-const currentPostIndex = allPosts.findIndex(a => a.slug === post.slug);
+const currentPostIndex = allPosts.findIndex(a => a.slug === post.id);
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
@@ -86,7 +86,7 @@ const nextPost =
       </svg><span>Go back</span>
     </button>
   </div>
-  <main id="main-content">
+  <main id="main-content" class="mx-auto w-full max-w-3xl pb-12">
     <div class="sm:px-4">
       <Title
         title={title}
@@ -164,12 +164,6 @@ const nextPost =
   </main>
   <Footer />
 </Layout>
-
-<style>
-  main {
-    @apply mx-auto w-full max-w-3xl pb-12;
-  }
-</style>
 
 <script>
   // KaTex support

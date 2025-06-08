@@ -1,6 +1,6 @@
 ---
 import LinkButton from "./LinkButton.astro";
-import socialIcons from "@assets/socialIcons";
+import socialIcons from "@/assets/socialIcons";
 const URL = Astro.url;
 const shareLinks = [
   {
@@ -16,14 +16,16 @@ const shareLinks = [
 ] as const;
 ---
 
-<div class={`social-icons`}>
+<div
+  class="flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"
+>
   <span class="italic">Share this post on:</span>
   <div class="text-center">
     {
       shareLinks.map(social => (
         <LinkButton
           href={`${social.href + URL}`}
-          className="link-button"
+          className="scale-90 p-2 hover:rotate-6 sm:p-1"
           title={social.linkTitle}
         >
           <Fragment set:html={socialIcons[social.name]} />
@@ -33,12 +35,3 @@ const shareLinks = [
     }
   </div>
 </div>
-
-<style>
-  .social-icons {
-    @apply flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start;
-  }
-  .link-button {
-    @apply scale-90 p-2 hover:rotate-6 sm:p-1;
-  }
-</style>

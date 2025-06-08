@@ -1,0 +1,295 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@theme {
+  --color-surface-primary: 27, 27, 31;
+  --color-surface-secondary: 50, 54, 63;
+  --color-surface-muted: 89, 107, 129;
+
+  --color-text-primary: 203, 203, 203;
+  --color-text-accent: 140, 204, 213;
+  --color-text-inverse: 27, 27, 31;
+
+  --color-border-default: 59, 70, 85;
+  --color-accent: 140, 204, 213;
+}
+
+@utility bg-skin-fill {
+  background-color: rgb(var(--color-surface-primary));
+}
+
+@utility text-skin-base {
+  color: rgb(var(--color-text-primary));
+}
+
+@utility text-skin-accent {
+  color: rgb(var(--color-text-accent));
+}
+
+@utility text-skin-inverted {
+  color: rgb(var(--color-text-inverse));
+}
+
+@utility bg-skin-accent {
+  background-color: rgb(var(--color-accent));
+}
+
+@utility bg-skin-card {
+  background-color: rgb(var(--color-surface-secondary));
+}
+
+@utility border-skin-line {
+  border-color: rgb(var(--color-border-default));
+}
+
+@utility fill-skin-base {
+  fill: rgb(var(--color-text-primary));
+}
+
+@utility fill-skin-accent {
+  fill: rgb(var(--color-accent));
+}
+
+@utility outline-skin-fill {
+  outline-color: rgb(var(--color-surface-primary));
+}
+
+@utility border-l-skin-accent {
+  border-left-color: rgb(var(--color-accent));
+}
+
+@layer base {
+  #sun-svg,
+  html[data-theme="dark"] #moon-svg {
+    display: none;
+  }
+  #moon-svg,
+  html[data-theme="dark"] #sun-svg {
+    display: block;
+  }
+  body {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    background-color: rgb(var(--color-surface-primary));
+    font-family:
+      ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    color: rgb(var(--color-text-primary));
+  }
+
+  body::selection {
+    background-color: rgba(var(--color-accent), 0.7);
+    color: rgb(var(--color-text-inverse));
+  }
+
+  section,
+  footer {
+    margin-inline: auto;
+    max-width: 48rem;
+    padding-inline: 1rem;
+  }
+  svg {
+    display: inline-block;
+    height: 1.5rem;
+    width: 1.5rem;
+    fill: rgb(var(--color-text-primary));
+  }
+
+  .group:hover svg {
+    fill: rgb(var(--color-accent));
+  }
+
+  svg.icon-tabler {
+    transform: scale(1.25);
+    fill: transparent;
+    stroke: currentColor;
+    stroke-width: 2;
+    opacity: 0.9;
+  }
+
+  svg.icon-share-tabler {
+    margin-block: -1rem;
+    transform: scale(1.25);
+    fill: #ffffff;
+  }
+
+  @media (min-width: 640px) {
+    svg.icon-tabler,
+    svg.icon-share-tabler {
+      transform: scale(1.1);
+    }
+  }
+
+  .group:hover svg.icon-tabler {
+    fill: transparent;
+  }
+
+  /* Hamburger menu animation */
+  .menu-icon.is-active .line {
+    opacity: 0 !important;
+  }
+
+  .menu-icon.is-active .close {
+    opacity: 1 !important;
+  }
+
+  /* zenn */
+  .znc > p {
+    color: rgb(var(--color-text-primary)) !important;
+  }
+
+  .znc em {
+    color: rgb(var(--color-text-primary)) !important;
+  }
+
+  .znc :where(h1, h2, h3, h4, h5, h6, strong, .footnotes-title) {
+    color: #ffffff !important;
+  }
+
+  .znc :where(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.5;
+    outline: 0;
+  }
+
+  .znc a {
+    color: #85beff !important;
+  }
+
+  .znc a:visited {
+    color: #c084fc !important;
+  }
+
+  .znc table {
+    color: #fff !important;
+  }
+
+  .znc th {
+    background-color: #32363f !important;
+  }
+
+  .znc td {
+    background-color: #1b1b1f !important;
+    color: rgb(var(--color-text-primary)) !important;
+  }
+
+  .znc th,
+  .znc td {
+    border-color: #fff !important;
+  }
+
+  .znc thead th:first-child,
+  tbody td:first-child,
+  tfoot td:first-child {
+    padding-left: 0.5714286em;
+  }
+
+  .znc blockquote {
+    word-break: break-all !important;
+    border-left-color: rgb(var(--color-accent) / 0.5) !important;
+    color: rgb(var(--color-text-primary)) !important;
+    opacity: 0.8 !important;
+  }
+
+  .znc ol,
+  ul {
+    color: rgb(var(--color-text-primary)) !important;
+  }
+
+  .znc ul {
+    overflow-x: clip;
+  }
+
+  .znc li::marker {
+    color: rgb(var(--color-accent)) !important;
+  }
+
+  .znc details {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .znc details[open] summary {
+    border-radius: 9px 9px 0 0 !important;
+  }
+
+  .znc .details-content {
+    border-radius: 0 0 9px 9px !important;
+    background-color: transparent !important;
+  }
+
+  .znc summary {
+    background-color: rgb(var(--color-surface-secondary));
+    outline: 2px dashed rgb(var(--color-surface-primary));
+    outline-offset: 1px;
+  }
+
+  .znc summary:focus-visible {
+    text-decoration: none;
+  }
+
+  .znc code::before {
+    content: "`";
+  }
+
+  .znc code::after {
+    content: "`";
+  }
+
+  .znc code {
+    word-break: break-all;
+    background-color: inherit !important;
+    color: #f472b6 !important;
+  }
+
+  .znc .code-block-container > pre > code::before,
+  .znc .code-block-container > pre > code::after {
+    content: none;
+  }
+
+  .znc .code-block-container > pre > code {
+    color: #fff !important;
+  }
+
+  /* ===== scrollbar ===== */
+  html {
+    overflow-y: scroll;
+  }
+}
+
+@layer components {
+  .focus-outline {
+    outline-width: 2px;
+    outline-offset: 1px;
+    outline-color: rgb(var(--color-surface-primary));
+  }
+
+  .focus-outline:focus-visible {
+    text-decoration: none;
+    outline-style: dashed;
+  }
+  .blink-cursor {
+    display: inline-block;
+    width: 0.5rem;
+    height: 1rem;
+    background-color: #f472b6;
+    margin-top: 0.125rem;
+    animation: cursor 1s infinite;
+  }
+
+  @keyframes cursor {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}

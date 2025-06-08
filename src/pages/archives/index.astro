@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import Card from "@components/Card";
-import Footer from "@components/Footer.astro";
-import Header from "@components/Header.astro";
-import { SITE } from "@config";
-import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import getPostsByGroupCondition from "@utils/getPostsByGroupCondition";
+import Card from "@/components/Card";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
 // Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
   return Astro.redirect("/404");
@@ -66,8 +66,8 @@ const MonthMap: Record<string, string> = {
                             new Date(a.data.pubDatetime).getTime() / 1000
                           )
                       )
-                      .map(({ data, slug }) => (
-                        <Card href={`/posts/${slug}`} frontmatter={data} />
+                      .map(({ data, id }) => (
+                        <Card href={`/posts/${id}`} frontmatter={data} />
                       ))}
                   </ul>
                 </div>

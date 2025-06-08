@@ -63,8 +63,9 @@ export interface Props {
           // Remove # characters from the heading text
           const rawText = heading.textContent || `Heading ${index + 1}`;
           const text = rawText
-            .replace(/^#+\s*/, "")
-            .replace(/\s*#+\s*$/, "")
+            .replace(/^#+\s*/, "") // Remove leading #
+            .replace(/\s*#+$/g, "") // Remove trailing # (with or without spaces)
+            .replace(/#$/g, "") // Remove any remaining trailing #
             .trim();
           const level = parseInt(heading.tagName.charAt(1));
 

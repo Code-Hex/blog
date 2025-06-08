@@ -1,7 +1,7 @@
 ---
-import { SITE } from "@config";
-import Posts from "@layouts/Posts.astro";
-import getSortedPosts from "@utils/getSortedPosts";
+import { SITE } from "@/config";
+import Posts from "@/layouts/Posts.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 export const getStaticPaths = (async ({ paginate }) => {

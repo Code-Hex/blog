@@ -63,15 +63,15 @@ export interface Props {
 const { title, url } = Astro.props;
 ---
 
-<aside class="share">
-  <p class="share-this-page">Share this page</p>
-  <div class="share-icons">
+<aside class="flex flex-row bg-[#202127] items-center justify-end py-4 px-4 space-x-4">
+  <p class="italic text-[#fff] text-xs">Share this page</p>
+  <div class="flex flex-row items-center space-x-2">
     {
       getShareLinks(title, url).map(social => (
         <div>
           <LinkButton
             href={social.href}
-            className="share-button"
+            className=""
             title={social.linkTitle}
             target="_blank"
           >
@@ -82,14 +82,3 @@ const { title, url } = Astro.props;
     }
   </div>
 </aside>
-<style>
-  .share {
-    @apply flex flex-row bg-[#202127] items-center justify-end py-4 px-4 space-x-4;
-  }
-  .share-this-page {
-    @apply italic text-[#fff] text-xs;
-  }
-  .share-icons {
-    @apply flex flex-row items-center space-x-2;
-  }
-</style>

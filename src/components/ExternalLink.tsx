@@ -1,4 +1,4 @@
-import { slugifyStr } from "@utils/slugify";
+import { slugifyStr } from "@/utils/slugify";
 import Datetime from "./Datetime";
 import type { CollectionEntry, CollectionKey } from "astro:content";
 import type { FC } from "react";

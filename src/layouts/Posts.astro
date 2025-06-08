@@ -1,12 +1,12 @@
 ---
-import { SITE } from "@config";
-import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Card from "@components/Card";
-import Pagination from "@components/Pagination.astro";
-import ExternalLink from "@components/ExternalLink";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card";
+import Pagination from "@/components/Pagination.astro";
+import ExternalLink from "@/components/ExternalLink";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -24,8 +24,8 @@ const { page } = Astro.props;
       {
         page.data.map(post => {
           if (post.collection === "blog") {
-            const { data, slug } = post;
-            return <Card href={`/posts/${slug}/`} frontmatter={data} />;
+            const { data, id } = post;
+            return <Card href={`/posts/${id}/`} frontmatter={data} />;
           }
           return <ExternalLink {...post} />;
         })

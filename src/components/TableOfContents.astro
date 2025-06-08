@@ -73,8 +73,8 @@ export interface Props {
             level === 2
               ? "pl-5 sm:pl-4"
               : level === 3
-                ? "pl-8 sm:pl-7"
-                : "pl-11 sm:pl-10";
+                ? "pl-7 sm:pl-6"
+                : "pl-10 sm:pl-9";
 
           return `
           <li class="-ml-px flex flex-col items-start gap-2">
@@ -163,11 +163,7 @@ export interface Props {
     // Update active link styling
     function updateActiveLink(newActiveId: string) {
       tocLinks.forEach(link => {
-        link.classList.remove(
-          "border-l-skin-accent",
-          "font-semibold",
-          "text-skin-accent"
-        );
+        link.classList.remove("border-l-skin-accent", "text-skin-accent");
         link.classList.add("text-skin-base/70");
         link.removeAttribute("aria-current");
       });
@@ -176,11 +172,7 @@ export interface Props {
         `[data-heading-id="${newActiveId}"]`
       );
       if (activeLink) {
-        activeLink.classList.add(
-          "border-l-skin-accent",
-          "font-semibold",
-          "text-skin-accent"
-        );
+        activeLink.classList.add("border-l-skin-accent", "text-skin-accent");
         activeLink.classList.remove("text-skin-base/70");
         activeLink.setAttribute("aria-current", "location");
       }

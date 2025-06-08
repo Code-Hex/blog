@@ -262,7 +262,6 @@
   /* ===== scrollbar ===== */
   html {
     overflow-y: scroll;
-    scroll-behavior: smooth;
   }
 
   /* Custom scrollbar for TOC */

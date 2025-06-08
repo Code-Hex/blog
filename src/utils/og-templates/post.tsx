@@ -51,11 +51,32 @@ export default async (post: CollectionEntry<"blog">) => {
   const { title, pubDatetime } = post.data;
   return satori(
     <div
-      tw="w-full h-full flex flex-col justify-between text-gray-100 bg-gray-900"
-      style={{ padding: "60pt 80pt 40pt 80pt" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        color: "#f3f4f6",
+        backgroundColor: "#111827",
+        padding: "60pt 80pt 40pt 80pt"
+      }}
     >
-      <div tw="w-full flex flex-col" style={{ gap: "8px" }}>
-        <p tw="text-4xl font-semibold text-gray-400">
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px"
+        }}
+      >
+        <p
+          style={{
+            fontSize: "36px",
+            fontWeight: 600,
+            color: "#9ca3af"
+          }}
+        >
           <span>
             {pubDatetime.getFullYear() +
               "-" +
@@ -64,15 +85,50 @@ export default async (post: CollectionEntry<"blog">) => {
               `${pubDatetime.getDate()}`.padStart(2, "0")}
           </span>
         </p>
-        <h1 tw="text-5xl font-bold text-gray-100 leading-normal">{title}</h1>
+        <h1
+          style={{
+            fontSize: "48px",
+            fontWeight: 700,
+            color: "#f3f4f6",
+            lineHeight: "normal"
+          }}
+        >
+          {title}
+        </h1>
       </div>
       <div
-        tw="w-full flex justify-between items-center"
-        style={{ gap: "24px" }}
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "24px"
+        }}
       >
-        <div tw="flex flex-col">
-          <p tw="mb-1 text-4xl font-semibold text-gray-200">{SITE.title}</p>
-          <p tw="text-xl font-bold tracking-wide text-indigo-400">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column"
+          }}
+        >
+          <p
+            style={{
+              marginBottom: "4px",
+              fontSize: "36px",
+              fontWeight: 600,
+              color: "#e5e7eb"
+            }}
+          >
+            {SITE.title}
+          </p>
+          <p
+            style={{
+              fontSize: "20px",
+              fontWeight: 700,
+              letterSpacing: "0.025em",
+              color: "#818cf8"
+            }}
+          >
             <span>https://blog.codehex.dev/posts/{post.id}</span>
           </p>
         </div>

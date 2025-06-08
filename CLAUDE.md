@@ -81,3 +81,9 @@ pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
 - Optimized image handling and lazy loading
 - Minimal JavaScript with island architecture
 - CDN deployment via Cloudflare Pages (wrangler preview)
+
+### Satori OG Image Generation
+- **Styling Limitations**: Satori doesn't directly support TailwindCSS classes - use inline `style` objects instead
+- **Display Property**: Always specify `display: "flex"` explicitly for containers with multiple children
+- **No className/tw**: Avoid `className` or `tw` props in Satori components - convert to CSS-in-JS style objects
+- **Reference**: [Satori Tailwind experimental support](https://github.com/vercel/satori/pull/340) uses twrnc but doesn't reflect project Tailwind config

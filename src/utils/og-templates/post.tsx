@@ -54,7 +54,7 @@ export default async (post: CollectionEntry<"blog">) => {
       tw="w-full h-full flex flex-col justify-between text-gray-100 bg-gray-900"
       style={{ padding: "60pt 80pt 40pt 80pt" }}
     >
-      <div tw="w-full flex flex-col space-y-2 multiline-truncate">
+      <div tw="w-full flex flex-col" style={{ gap: "8px" }}>
         <p tw="text-4xl font-semibold text-gray-400">
           <span>
             {pubDatetime.getFullYear() +
@@ -66,11 +66,14 @@ export default async (post: CollectionEntry<"blog">) => {
         </p>
         <h1 tw="text-5xl font-bold text-gray-100 leading-normal">{title}</h1>
       </div>
-      <div tw="w-full flex justify-between items-center space-x-6">
+      <div
+        tw="w-full flex justify-between items-center"
+        style={{ gap: "24px" }}
+      >
         <div tw="flex flex-col">
           <p tw="mb-1 text-4xl font-semibold text-gray-200">{SITE.title}</p>
           <p tw="text-xl font-bold tracking-wide text-indigo-400">
-            <span tw="path">https://blog.codehex.dev/posts/{post.slug}</span>
+            <span>https://blog.codehex.dev/posts/{post.id}</span>
           </p>
         </div>
         <CodeHex />

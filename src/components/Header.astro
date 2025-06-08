@@ -55,7 +55,7 @@ const { activeNav } = Astro.props;
             <line x1="6" y1="6" x2="18" y2="18" class="close opacity-0"></line>
           </svg>
         </button>
-        <ul id="menu-items" class="display-none mt-4 sm:flex w-44 flex-col sm:flex-row gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0">
+        <ul id="menu-items" class="hidden mt-4 sm:flex w-44 flex-col sm:flex-row gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0">
           <li class="col-span-2 flex items-center justify-center">
             <a href="/posts/" class={`w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 ${activeNav === "posts" ? "underline decoration-wavy decoration-2 underline-offset-4" : ""}`}>
               Posts
@@ -173,7 +173,7 @@ const { activeNav } = Astro.props;
         "aria-label",
         menuExpanded ? "Open Menu" : "Close Menu"
       );
-      menuItems?.classList.toggle("display-none");
+      menuItems?.classList.toggle("hidden");
     });
   }
 

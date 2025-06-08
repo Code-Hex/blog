@@ -32,6 +32,13 @@ export interface Props {
 </aside>
 
 <script>
+  // Extend Window interface for cleanup function
+  declare global {
+    interface Window {
+      tocCleanup?: () => void;
+    }
+  }
+
   function initializeTOC() {
     const toc = document.getElementById("table-of-contents");
     if (!toc) return;
@@ -180,25 +187,26 @@ export interface Props {
 
     // Handle smooth scroll to section
     tocLinks.forEach(link => {
-      link.addEventListener("click", function (e: Event) {
-        e.preventDefault();
-        const headingId = (this as HTMLAnchorElement).getAttribute(
-          "data-heading-id"
-        );
-        const element = headingId ? document.getElementById(headingId) : null;
+      link.addEventListener(
+        "click",
+        function (this: HTMLAnchorElement, e: Event) {
+          e.preventDefault();
+          const headingId = this.getAttribute("data-heading-id");
+          const element = headingId ? document.getElementById(headingId) : null;
 
-        if (element) {
-          element.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-          window.history.replaceState(null, "", `#${headingId}`);
+          if (element) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            window.history.replaceState(null, "", `#${headingId}`);
+          }
         }
-      });
+      );
     });
 
     // Store cleanup functions globally
-    (window as any).tocCleanup = () => {
+    window.tocCleanup = () => {
       observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
     };
@@ -214,8 +222,8 @@ export interface Props {
   // Re-initialize after Astro page transitions
   document.addEventListener("astro:page-load", function () {
     // Clean up previous observers and listeners
-    if ((window as any).tocCleanup) {
-      (window as any).tocCleanup();
+    if (window.tocCleanup) {
+      window.tocCleanup();
     }
     // Re-initialize
     initializeTOC();

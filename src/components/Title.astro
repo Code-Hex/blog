@@ -18,8 +18,13 @@ const { title, tags, pubDatetime, modDatetime, readingTime, editPost, postId } =
   Astro.props;
 ---
 
-<div class="flex w-full flex-col items-center bg-skin-card px-4 py-4 text-center">
-  <h1 transition:name={slugifyStr(title)} class="mb-4 text-2xl font-semibold text-[#fff] inline-block">
+<div
+  class="flex w-full flex-col items-center bg-skin-card px-4 py-4 text-center"
+>
+  <h1
+    transition:name={slugifyStr(title)}
+    class="mb-4 text-2xl font-semibold text-[#fff] inline-block"
+  >
     {title}
   </h1>
   <ul class="mb-4">

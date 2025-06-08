@@ -59,7 +59,7 @@ export default async (post: CollectionEntry<"blog">) => {
         justifyContent: "space-between",
         color: "#f3f4f6",
         backgroundColor: "#111827",
-        padding: "60pt 80pt 40pt 80pt"
+        padding: "60pt 80pt 40pt 80pt",
       }}
     >
       <div
@@ -67,14 +67,14 @@ export default async (post: CollectionEntry<"blog">) => {
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          gap: "8px"
+          gap: "8px",
         }}
       >
         <p
           style={{
             fontSize: "36px",
             fontWeight: 600,
-            color: "#9ca3af"
+            color: "#9ca3af",
           }}
         >
           <span>
@@ -90,7 +90,7 @@ export default async (post: CollectionEntry<"blog">) => {
             fontSize: "48px",
             fontWeight: 700,
             color: "#f3f4f6",
-            lineHeight: "normal"
+            lineHeight: "normal",
           }}
         >
           {title}
@@ -102,13 +102,13 @@ export default async (post: CollectionEntry<"blog">) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          gap: "24px"
+          gap: "24px",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "column"
+            flexDirection: "column",
           }}
         >
           <p
@@ -116,7 +116,7 @@ export default async (post: CollectionEntry<"blog">) => {
               marginBottom: "4px",
               fontSize: "36px",
               fontWeight: 600,
-              color: "#e5e7eb"
+              color: "#e5e7eb",
             }}
           >
             {SITE.title}
@@ -126,7 +126,7 @@ export default async (post: CollectionEntry<"blog">) => {
               fontSize: "20px",
               fontWeight: 700,
               letterSpacing: "0.025em",
-              color: "#818cf8"
+              color: "#818cf8",
             }}
           >
             <span>https://blog.codehex.dev/posts/{post.id}</span>

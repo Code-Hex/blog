@@ -122,6 +122,15 @@
   .group:hover svg.icon-tabler {
     fill: transparent;
   }
+  
+  /* Hamburger menu animation */
+  .menu-icon.is-active .line {
+    opacity: 0 !important;
+  }
+  
+  .menu-icon.is-active .close {
+    opacity: 1 !important;
+  }
 
   /* zenn */
   .znc > p {

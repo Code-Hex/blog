@@ -58,6 +58,10 @@
   border-left-color: rgb(var(--color-accent));
 }
 
+@utility border-l-3 {
+  border-left-width: 3px;
+}
+
 @layer base {
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -259,9 +263,48 @@
   html {
     overflow-y: scroll;
   }
+
+  /* Custom scrollbar for TOC */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-track-transparent {
+    scrollbar-color: transparent transparent;
+  }
+
+  .scrollbar-thumb-gray-300 {
+    scrollbar-color: rgb(209, 213, 219) transparent;
+  }
+
+  .dark .scrollbar-thumb-gray-600 {
+    scrollbar-color: rgb(75, 85, 99) transparent;
+  }
+
+  /* Webkit scrollbar styles */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(209, 213, 219);
+    border-radius: 3px;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(75, 85, 99);
+  }
 }
 
 @layer components {
+  .znc :is(h2, h3, h4, h5, h6) {
+    scroll-margin-top: 2rem;
+  }
+
   .focus-outline {
     outline-width: 2px;
     outline-offset: 1px;

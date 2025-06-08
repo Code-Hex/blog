@@ -7,6 +7,7 @@ import Share from "@/components/Share.astro";
 import Title from "@/components/Title.astro";
 import zennMarkdownToHtml from "zenn-markdown-html";
 import { Blog } from "@/components/Blog";
+import TableOfContents from "@/components/TableOfContents.astro";
 import { SITE } from "@/config";
 
 // build時にそのまま使うとエラーになるため修正
@@ -100,6 +101,7 @@ const nextPost =
       <Share title={title} url={Astro.url.toString()} />
     </div>
     <Blog html={html} />
+    <TableOfContents html={html} />
     <hr class="my-6 border-dashed" />
 
     <!-- Previous/Next Post Buttons -->

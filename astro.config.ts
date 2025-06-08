@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import rehypeSlug from "rehype-slug";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark/remark-reading-time";
 
@@ -18,7 +19,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [
-      remarkToc,
+      [remarkToc, { heading: "table of contents", tight: true }],
       remarkReadingTime,
       [
         remarkCollapse,
@@ -27,6 +28,7 @@ export default defineConfig({
         },
       ],
     ],
+    rehypePlugins: [rehypeSlug],
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },

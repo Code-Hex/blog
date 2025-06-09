@@ -34,7 +34,7 @@ const blog = defineCollection({
 });
 
 const zenn = defineCollection({
-  loader: glob({ pattern: "**/*.json", base: "./src/content/zenn" }),
+  loader: glob({ pattern: "**/*.json", base: "./src/data/zenn" }),
   schema: () =>
     z.object({
       title: z.string(),

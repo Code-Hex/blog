@@ -1,0 +1,37 @@
+---
+import LinkButton from "./LinkButton.astro";
+---
+
+{
+  (
+    <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+      <LinkButton
+        id="back-button"
+        class="focus-outline flex mt-8 mb-2 text-[#fff] hover:opacity-75"
+        href="/"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+        </svg>
+        <span>Go back</span>
+      </LinkButton>
+    </div>
+  )
+}
+
+<script>
+  /* Update Search Praam */
+  function updateGoBackUrl() {
+    const backButton: HTMLAnchorElement | null =
+      document.querySelector("#back-button");
+
+    const backUrl = sessionStorage.getItem("backUrl");
+
+    if (backUrl && backButton) {
+      backButton.href = backUrl;
+    }
+  }
+
+  document.addEventListener("astro:page-load", updateGoBackUrl);
+  updateGoBackUrl();
+</script>

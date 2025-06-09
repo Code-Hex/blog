@@ -5,7 +5,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Hr from "@/components/Hr.astro";
-import Card from "@/components/Card";
+import Card from "@/components/Card.astro";
 import Socials from "@/components/Socials.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
@@ -22,7 +22,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
 <Layout>
   <Header />
-  <main id="main-content">
+  <main id="main-content" data-layout="index">
     <section id="hero" class="pb-6 pt-8">
       <h1 class="mr-2 my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl">
         Blog
@@ -35,7 +35,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       <p class="my-2">
         Read the blog posts or check
         <LinkButton
-          className="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
+          class="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
           href="https://codehex.dev/"
           target="_blank"
         >
@@ -44,7 +44,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </p>
       <p class="my-2">
         Previous my blog: <LinkButton
-          className="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
+          class="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
           href="https://codehex.hateblo.jp/"
           target="_blank"
         >
@@ -118,3 +118,13 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
   <Footer />
 </Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", "/");
+    }
+  });
+</script>

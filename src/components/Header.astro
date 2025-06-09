@@ -135,7 +135,7 @@ const { activeNav } = Astro.props;
               <li class="col-span-1 flex items-center justify-center">
                 <LinkButton
                   href="/archives/"
-                  className={`focus-outline flex justify-center p-3 sm:p-1`}
+                  class={`focus-outline flex justify-center p-3 sm:p-1`}
                   ariaLabel="archives"
                   title="Archives"
                 >
@@ -169,7 +169,7 @@ const { activeNav } = Astro.props;
           <li class="col-span-1 flex items-center justify-center">
             <LinkButton
               href="/search/"
-              className={`focus-outline p-3 sm:p-1 ${
+              class={`focus-outline p-3 sm:p-1 ${
                 activeNav === "search" ? "active" : ""
               } flex`}
               ariaLabel="search"

@@ -1,9 +1,9 @@
-import { parse } from "https://deno.land/x/xml@5.4.13/mod.ts";
-import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
-import { join, basename } from "https://deno.land/std@0.224.0/path/mod.ts"
+import { parse } from "jsr:@libs/xml@7/parse";
+import { ensureDir } from "jsr:@std/fs";
+import { basename, join } from "jsr:@std/path";
 
 const rssUrl = "https://zenn.dev/codehex/feed";
-const outputDir = './src/content/zenn'
+const outputDir = "./src/data/zenn";
 
 interface FeedItem {
   title: string;
@@ -21,7 +21,7 @@ async function fetchRSSFeed(url: string): Promise<string> {
 
 function parseXML(xml: string): FeedItem[] {
   const result = parse(xml);
-  const items = result.rss.channel.item;
+  const items = (result.rss as any).channel.item;
   return items.map((item: any) => ({
     title: item.title,
     pubDatetime: convertToISO8601(item.pubDate),
@@ -34,7 +34,10 @@ function convertToISO8601(pubDate: string): string {
   return date.toISOString();
 }
 
-async function writeItemToFile(item: FeedItem, outputDir: string): Promise<void> {
+async function writeItemToFile(
+  item: FeedItem,
+  outputDir: string,
+): Promise<void> {
   const fileName = basename(item.link) + ".json";
   const filePath = join(outputDir, fileName);
   await Deno.writeTextFile(filePath, JSON.stringify(item));
@@ -52,10 +55,10 @@ async function main() {
   try {
     const xmlContent = await fetchRSSFeed(rssUrl);
     const items = parseXML(xmlContent);
-    await processItems(items)
+    await processItems(items);
     console.log(`Feed successfully updated and saved to ${outputDir}`);
   } catch (error) {
-    console.error('Error processing feed:', error);
+    console.error("Error processing feed:", error);
   }
 }
 

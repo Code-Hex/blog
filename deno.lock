@@ -114,6 +114,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@astrojs/check@~0.9.4",
+        "npm:@astrojs/react@^4.3.0",
         "npm:@astrojs/rss@^4.0.12",
         "npm:@astrojs/sitemap@^3.4.1",
         "npm:@pagefind/default-ui@^1.3.0",
@@ -122,6 +123,8 @@
         "npm:@tailwindcss/vite@^4.1.8",
         "npm:@types/github-slugger@^1.3.0",
         "npm:@types/lodash.kebabcase@^4.1.9",
+        "npm:@types/react-dom@^19.1.6",
+        "npm:@types/react@^19.1.6",
         "npm:@typescript-eslint/parser@^8.25.0",
         "npm:astro@^5.9.1",
         "npm:eslint-plugin-astro@^1.3.1",
@@ -133,6 +136,8 @@
         "npm:prettier-plugin-astro@~0.14.1",
         "npm:prettier-plugin-tailwindcss@~0.6.11",
         "npm:prettier@^3.5.2",
+        "npm:react-dom@^19.1.0",
+        "npm:react@^19.1.0",
         "npm:reading-time@^1.5.0",
         "npm:rehype-slug@6",
         "npm:remark-collapse@~0.1.2",

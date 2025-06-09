@@ -3,7 +3,7 @@ import { ensureDir } from "jsr:@std/fs";
 import { basename, join } from "jsr:@std/path";
 
 const rssUrl = "https://zenn.dev/codehex/feed";
-const outputDir = "./src/content/zenn";
+const outputDir = "./src/data/zenn";
 
 interface FeedItem {
   title: string;

@@ -27,4 +27,4 @@ pnpm-debug.log*
 .wrangler
 
 # pagefind
-/dist/pagefind/
+public/pagefind

@@ -1,0 +1,13 @@
+---
+import "zenn-content-css";
+
+export interface Props {
+  html: string;
+}
+
+const { html } = Astro.props;
+---
+
+<article id="article" role="article" class="mx-auto mt-2 max-w-3xl px-4">
+  <div class="znc" set:html={html} />
+</article>

@@ -25,7 +25,7 @@ const shareLinks = [
       shareLinks.map(social => (
         <LinkButton
           href={`${social.href + URL}`}
-          className="scale-90 p-2 hover:rotate-6 sm:p-1"
+          class="scale-90 p-2 hover:rotate-6 sm:p-1"
           title={social.linkTitle}
         >
           <Fragment set:html={socialIcons[social.name]} />

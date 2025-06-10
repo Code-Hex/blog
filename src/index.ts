@@ -109,6 +109,68 @@ app.delete('/api/admin/posts/:id', async (c) => {
   }
 })
 
+// Image management endpoints
+app.get('/api/admin/images', async (c) => {
+  const db = c.env.DB
+  
+  const { results } = await db.prepare(`
+    SELECT *
+    FROM images
+    ORDER BY createdAt DESC
+  `).all()
+
+  return c.json(results)
+})
+
+app.post('/api/admin/images', async (c) => {
+  const db = c.env.DB
+  const formData = await c.req.formData()
+  const file = formData.get('file') as File
+  const postId = formData.get('postId') as string | null
+  
+  if (!file) {
+    return c.json({ error: 'No file provided' }, 400)
+  }
+
+  // For now, we'll store images as base64 in the database
+  // In production, you'd upload to Cloudflare Images or R2
+  const buffer = await file.arrayBuffer()
+  const base64 = Buffer.from(buffer).toString('base64')
+  const filename = file.name
+  const url = `data:${file.type};base64,${base64}`
+
+  try {
+    const result = await db.prepare(`
+      INSERT INTO images (filename, url, postId, createdAt)
+      VALUES (?, ?, ?, datetime('now'))
+    `).bind(filename, url, postId).run()
+
+    return c.json({ 
+      id: result.meta.last_row_id,
+      filename,
+      url,
+      postId
+    }, 201)
+  } catch (error) {
+    return c.json({ error: 'Failed to upload image' }, 500)
+  }
+})
+
+app.delete('/api/admin/images/:id', async (c) => {
+  const id = c.req.param('id')
+  const db = c.env.DB
+  
+  try {
+    await db.prepare(`
+      DELETE FROM images WHERE id = ?
+    `).bind(id).run()
+
+    return c.json({ success: true })
+  } catch (error) {
+    return c.json({ error: 'Failed to delete image' }, 500)
+  }
+})
+
 // Main fetch handler
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {

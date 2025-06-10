@@ -1,12 +1,22 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "blog",
+  "main": "src/index.ts",
+  "account_id": "placeholder-will-be-replaced",
   "compatibility_date": "2025-03-25",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "blog-db",
+      "database_id": "placeholder-will-be-replaced"
+    }
+  ],
   "preview_urls": true,
   "workers_dev": true
 }

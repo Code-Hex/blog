@@ -187,38 +187,47 @@ const AdminApp: React.FC = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Blog Admin Login
-            </h2>
-          </div>
-          <div className="mt-8 space-y-6">
-            <div>
-              <input
-                type="text"
-                placeholder="Username"
-                value={credentials.username}
-                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="max-w-md w-full mx-4">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 p-8">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-white">
+                Blog Admin
+              </h2>
+              <p className="text-white/70 mt-2">Sign in to manage your content</p>
             </div>
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={credentials.password}
-                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+            <div className="space-y-6">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={credentials.username}
+                  onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm"
+                />
+              </div>
+              <div>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={credentials.password}
+                  onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                  onKeyPress={(e) => e.key === 'Enter' && authenticate()}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm"
+                />
+              </div>
+              <button
+                onClick={authenticate}
+                className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                Sign in
+              </button>
             </div>
-            <button
-              onClick={authenticate}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Sign in
-            </button>
           </div>
         </div>
       </div>
@@ -226,144 +235,255 @@ const AdminApp: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Blog Administration</h1>
-        
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Header */}
+      <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200/60 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
+                  Blog Admin
+                </h1>
+                <p className="text-sm text-slate-500">Content Management System</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsAuthenticated(false)}
+              className="px-4 py-2 text-sm text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Tab Navigation */}
-        <div className="border-b border-gray-200 mb-8">
-          <nav className="-mb-px flex space-x-8">
+        <div className="mb-8">
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-1 border border-slate-200/60 inline-flex">
             <button
               onClick={() => setActiveTab('posts')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              className={`px-6 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                 activeTab === 'posts'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
               }`}
             >
-              Posts
+              <span className="flex items-center space-x-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span>Posts</span>
+              </span>
             </button>
             <button
               onClick={() => setActiveTab('images')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              className={`px-6 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                 activeTab === 'images'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
               }`}
             >
-              Images
+              <span className="flex items-center space-x-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Images</span>
+              </span>
             </button>
-          </nav>
+          </div>
         </div>
 
         {activeTab === 'posts' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
             {/* Post Editor */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold mb-4">
-                {editingId ? 'Edit Post' : 'Create New Post'}
-              </h2>
-              
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Post Title"
-                  value={currentPost.title || ''}
-                  onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                
-                <input
-                  type="text"
-                  placeholder="Slug"
-                  value={currentPost.slug || ''}
-                  onChange={(e) => setCurrentPost({ ...currentPost, slug: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                
-                <input
-                  type="text"
-                  placeholder="Tags (JSON array, e.g., [&quot;tag1&quot;, &quot;tag2&quot;])"
-                  value={currentPost.tags || ''}
-                  onChange={(e) => setCurrentPost({ ...currentPost, tags: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="published"
-                    checked={currentPost.published || false}
-                    onChange={(e) => setCurrentPost({ ...currentPost, published: e.target.checked })}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="published" className="ml-2 block text-sm text-gray-900">
-                    Published
-                  </label>
-                </div>
-
-                <div data-color-mode="light">
-                  <MDEditor
-                    value={currentPost.content || ''}
-                    onChange={(val) => setCurrentPost({ ...currentPost, content: val || '' })}
-                    height={400}
-                  />
-                </div>
-
-                <div className="flex space-x-4">
-                  <button
-                    onClick={savePost}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    {editingId ? 'Update' : 'Create'} Post
-                  </button>
-                  
+            <div className="xl:col-span-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/60 p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900">
+                      {editingId ? 'Edit Post' : 'Create New Post'}
+                    </h2>
+                    <p className="text-slate-500 mt-1">
+                      {editingId ? 'Make changes to your existing post' : 'Write something amazing'}
+                    </p>
+                  </div>
                   {editingId && (
                     <button
                       onClick={() => {
                         setCurrentPost({ title: '', content: '', slug: '', tags: '', published: false });
                         setEditingId(null);
                       }}
-                      className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                      className="px-4 py-2 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
                     >
-                      Cancel
+                      Cancel Edit
                     </button>
                   )}
+                </div>
+                
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Title</label>
+                      <input
+                        type="text"
+                        placeholder="Enter post title..."
+                        value={currentPost.title || ''}
+                        onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Slug</label>
+                      <input
+                        type="text"
+                        placeholder="url-friendly-slug"
+                        value={currentPost.slug || ''}
+                        onChange={(e) => setCurrentPost({ ...currentPost, slug: e.target.value })}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Tags</label>
+                    <input
+                      type="text"
+                      placeholder="[&quot;javascript&quot;, &quot;react&quot;, &quot;tutorial&quot;]"
+                      value={currentPost.tags || ''}
+                      onChange={(e) => setCurrentPost({ ...currentPost, tags: e.target.value })}
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <p className="text-xs text-slate-500 mt-1">JSON array format</p>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        id="published"
+                        checked={currentPost.published || false}
+                        onChange={(e) => setCurrentPost({ ...currentPost, published: e.target.checked })}
+                        className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-slate-300 rounded-md"
+                      />
+                    </div>
+                    <label htmlFor="published" className="text-sm font-medium text-slate-700 cursor-pointer">
+                      Publish immediately
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-3">Content</label>
+                    <div className="rounded-xl overflow-hidden border border-slate-200 bg-white">
+                      <div data-color-mode="light">
+                        <MDEditor
+                          value={currentPost.content || ''}
+                          onChange={(val) => setCurrentPost({ ...currentPost, content: val || '' })}
+                          height={500}
+                          data-color-mode="light"
+                          visibleDragBar={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-4 pt-6 border-t border-slate-200">
+                    <button
+                      onClick={savePost}
+                      className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-medium hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      {editingId ? 'Update Post' : 'Create Post'}
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setCurrentPost({ title: '', content: '', slug: '', tags: '', published: false });
+                        setEditingId(null);
+                      }}
+                      className="px-8 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200"
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Posts List */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold mb-4">Posts</h2>
-              <div className="space-y-4 max-h-96 overflow-y-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/60 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900">All Posts</h2>
+                  <p className="text-sm text-slate-500 mt-1">{posts.length} total posts</p>
+                </div>
+                <div className="text-xs text-slate-400">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-700 mr-2">
+                    ● {posts.filter(p => p.published).length} Published
+                  </span>
+                  <span className="inline-flex items-center px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                    ● {posts.filter(p => !p.published).length} Drafts
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-3 max-h-[600px] overflow-y-auto">
                 {posts.map((post) => (
-                  <div key={post.id} className="border border-gray-200 rounded-lg p-4">
+                  <div key={post.id} className="group bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200 hover:border-slate-300">
                     <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-medium text-gray-900">{post.title}</h3>
-                        <p className="text-sm text-gray-500">/{post.slug}</p>
-                        <p className="text-xs text-gray-400">
-                          {post.published ? 'Published' : 'Draft'} • {post.createdAt}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h3 className="font-semibold text-slate-900 truncate">{post.title}</h3>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            post.published 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {post.published ? 'Published' : 'Draft'}
+                          </span>
+                        </div>
+                        <p className="text-sm text-slate-500 font-mono">/{post.slug}</p>
+                        <p className="text-xs text-slate-400 mt-1">
+                          Created {new Date(post.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => editPost(post)}
-                          className="text-blue-600 hover:text-blue-800 text-sm"
+                          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Edit post"
                         >
-                          Edit
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
                         </button>
                         <button
                           onClick={() => deletePost(post.id)}
-                          className="text-red-600 hover:text-red-800 text-sm"
+                          className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete post"
                         >
-                          Delete
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
+                {posts.length === 0 && (
+                  <div className="text-center py-12">
+                    <svg className="w-12 h-12 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p className="text-slate-500">No posts yet</p>
+                    <p className="text-slate-400 text-sm">Create your first post to get started</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -1,0 +1,33 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import MarkdownEditor from "../../components/MarkdownEditor";
+
+export const prerender = false;
+
+// Basic auth check (in production, use proper authentication)
+const authHeader = Astro.request.headers.get('authorization');
+if (!authHeader || !authHeader.startsWith('Basic ')) {
+  return new Response('Unauthorized', {
+    status: 401,
+    headers: {
+      'WWW-Authenticate': 'Basic realm="Admin Area"'
+    }
+  });
+}
+
+const credentials = atob(authHeader.slice(6));
+const [username, password] = credentials.split(':');
+
+if (username !== 'admin' || password !== 'changeme') {
+  return new Response('Unauthorized', {
+    status: 401,
+    headers: {
+      'WWW-Authenticate': 'Basic realm="Admin Area"'
+    }
+  });
+}
+---
+
+<Layout title="Blog Admin - Markdown Editor">
+  <MarkdownEditor client:load />
+</Layout>

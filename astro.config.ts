@@ -7,10 +7,13 @@ import remarkCollapse from "remark-collapse";
 import rehypeSlug from "rehype-slug";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark/remark-reading-time";
+import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  output: "server",
+  adapter: cloudflare(),
   integrations: [
     react(),
     sitemap({

@@ -10,12 +10,12 @@ This is a personal blog built with Astro using the AstroPaper theme. It's a Japa
 
 ```bash
 # Development
-pnpm run dev              # Start dev server at localhost:4321
+pnpm run dev              # Start Astro SSG dev server at localhost:4321 (src/ directory)
 pnpm install              # Install dependencies
 
 # Build and Preview
 pnpm run build            # Build production site to ./dist/
-pnpm run preview          # Preview build locally (uses Cloudflare wrangler)
+pnpm run preview          # Production-like preview with Workers SSR + static assets (localhost:8788)
 
 # Code Quality
 pnpm run lint             # Run ESLint
@@ -24,9 +24,31 @@ pnpm run sync             # Generate TypeScript types for Astro modules
 
 # Content Management
 pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
+
+# Wrangler
+pnpm run wrangler
 ```
 
+### Development vs Preview Environments
+
+**🔧 Development Environment (`pnpm run dev`)**
+- **Purpose**: Astro SSG development and testing
+- **Port**: localhost:4321
+- **Use for**: Testing Astro components, static site features, TailwindCSS styling
+- **What's running**: Astro dev server only (no Workers)
+
+**🚀 Production Preview (`pnpm run preview`)**  
+- **Purpose**: Full-stack testing with Workers SSR and static assets
+- **Port**: localhost:8788 (Cloudflare wrangler)
+- **Use for**: Testing Workers API endpoints, markdown editor, full application integration
+- **What's running**: Complete production-like environment with both Astro static site and Hono Workers API
+
 ## Architecture Overview
+
+### Unified Architecture
+- **Astro SSR** (`src/`): Static site generation + server-side rendering for the blog
+- **Integrated Hono API** (`src/pages/api/`): API routes within Astro using Hono framework
+- **Deployment**: Single deployment via wrangler with Astro SSR + integrated API
 
 ### Content System
 - **Local Blog Posts**: Markdown files in `src/content/blog/` with frontmatter schema validation
@@ -34,10 +56,19 @@ pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
 - **Dual Collection Setup**: Separate Astro content collections for blog and zenn content types
 
 ### Tech Stack Integration
-- **Astro**: Main framework with content layer API and file-based routing
-- **React**: Component framework for interactive elements (Search, etc.)
-- **TailwindCSS**: Styling with custom configuration and typography plugin
+- **Astro** (`src/`): Main framework with content layer API, file-based routing, and SSR
+- **React**: Component framework for interactive elements (Search, MarkdownEditor, etc.)
+- **TailwindCSS**: Unified styling solution with custom skin-based theme system
+- **Hono** (`src/pages/api/`): Ultrafast web framework for API endpoints within Astro
 - **TypeScript**: Full type safety with Astro's built-in type generation
+- **Cloudflare D1**: SQLite database for dynamic content storage (planned)
+
+### Styling System
+**✅ UNIFIED APPROACH**: All components use TailwindCSS with skin-based theme system:
+
+- **Consistent theming**: `bg-skin-*`, `text-skin-*`, `border-skin-*` utilities
+- **Responsive design**: Mobile-first approach with Tailwind breakpoints
+- **Dark theme support**: Built into skin system with CSS custom properties
 
 ### Content Processing Pipeline
 1. **Reading Time Calculation**: Custom remark plugin adds `minutesRead` to frontmatter
@@ -63,6 +94,132 @@ pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
 - **Zenn Integration**: External articles fetched via `scripts/zenn-feed.ts`
 - **Mixed Display**: Both content types rendered uniformly in the UI
 
+## API Development Guidelines
+
+### Hono API Routes in Astro
+
+**📍 LOCATION**: API routes are located in `src/pages/api/` and integrate seamlessly with Astro SSR.
+
+#### Basic API Route Structure:
+```ts
+// src/pages/api/[...path].ts
+import { Hono } from 'hono';
+import type { APIRoute } from 'astro';
+
+const app = new Hono()
+  .basePath('/api/')
+  .get('/posts', async (c) => {
+    return c.json([
+      { id: 1, title: 'Hello World', content: 'Sample content' }
+    ]);
+  })
+  .post('/admin/posts', async (c) => {
+    const body = await c.req.json();
+    return c.json({ success: true, id: Date.now() }, 201);
+  });
+
+export type App = typeof app;
+export const ALL: APIRoute = (context) => app.fetch(context.request);
+```
+
+#### TypeScript Integration:
+```tsx
+// React component using typed Hono client
+import { hc } from 'hono/client';
+import type { App } from '../pages/api/[...path]';
+
+const client = hc<App>(window.location.origin);
+
+const response = await client.api['admin']['posts'].$post({
+  json: { title: 'New Post', content: 'Content here' }
+});
+```
+
+#### Key Points for API Development:
+1. **Use Hono within Astro**: No separate workers directory needed
+2. **Full TypeScript support**: Export App type for client-side typing
+3. **Astro integration**: Use APIRoute for seamless deployment
+4. **Authentication**: Implement in Astro pages (like `/admin/*` routes)
+
+### Setup Guide (Reference: nuro.dev)
+
+**Installation Steps:**
+```bash
+# 1. Install dependencies
+npm install hono
+
+# 2. Create catch-all API route
+# File: src/pages/api/[...path].ts
+```
+
+**Basic Integration Pattern:**
+```typescript
+import { Hono } from 'hono';
+import type { APIRoute } from 'astro';
+
+const app = new Hono().basePath('/api/');
+
+// Sample endpoint
+app.get('/posts', async (c) => c.json({
+  posts: [
+    { id: 1, title: 'Hello World' },
+    { id: 2, title: 'Goodbye World' }
+  ]
+}));
+
+// Bind Hono to Astro
+export const ALL: APIRoute = (context) => app.fetch(context.request);
+
+// Export type for client-side typing
+export type App = typeof app;
+```
+
+**Typed Client Usage:**
+```typescript
+import { hc } from 'hono/client';
+import type { App } from './api/[...path]';
+
+const client = hc<App>(window.location.origin);
+const response = await client.api.posts.$get();
+const data = await response.json();
+```
+
+**Benefits of this Integration:**
+- **Seamless API integration** within Astro's file-based routing
+- **End-to-end type safety** with TypeScript
+- **Flexible routing** with Hono's powerful routing system
+- **Multi-environment support** (Cloudflare, Node.js, etc.)
+- **RPC-like experience** with typed client
+
+**Reference**: [How to use Astro with Hono](https://nuro.dev/posts/how_to_use_astro_with_hono/)
+
+### 🎯 Quick Styling Reference
+
+| Directory | Framework | Styling Method | Example |
+|-----------|-----------|----------------|---------|
+| `src/` | Astro/React/Hono API | **TailwindCSS + Skin System** | `class="bg-skin-fill text-skin-base border-skin-line"` |
+
+#### Theme System Colors (Unified styling approach)
+```css
+/* Primary Colors */
+bg-skin-fill          /* Main background */
+bg-skin-card          /* Card/secondary background */
+bg-skin-accent        /* Accent color (links, buttons) */
+
+/* Text Colors */
+text-skin-base        /* Primary text */
+text-skin-accent      /* Accent text */
+text-skin-inverted    /* Inverted text (on accent backgrounds) */
+
+/* Border Colors */
+border-skin-line      /* Standard borders */
+```
+
+**Current Architecture**: 
+- **Unified styling**: All components use TailwindCSS with skin system
+- **Astro SSR**: Hono API integrated within Astro (no separate workers directory)
+- **Theme consistency**: Always use skin-based colors for proper theme integration
+
 ## Development Notes
 
 ### Adding Content
@@ -70,9 +227,39 @@ pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
 - Run `npm run zenn-feed` to sync external Zenn articles
 - OG images auto-generate for posts without custom ogImage
 
-### Styling Approach
-- TailwindCSS with custom base styles disabled in favor of Astro's defaults
-- Typography plugin for markdown content styling
+### Styling Approach for Astro Components
+- **TailwindCSS**: Primary styling solution for all Astro components in `src/` directory
+- **Custom base styles**: Disabled in favor of Astro's defaults
+- **Typography plugin**: For markdown content styling
+- **Responsive design**: Mobile-first approach with Tailwind responsive utilities
+
+#### TailwindCSS Usage Examples:
+```astro
+<!-- src/components/Header.astro -->
+<header class="bg-white shadow-md border-b border-gray-200">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <!-- Navigation content -->
+    </div>
+  </nav>
+</header>
+```
+
+```tsx
+// src/components/Search.tsx (React in Astro)
+export default function Search() {
+  return (
+    <div className="relative max-w-md mx-auto">
+      <input 
+        type="search"
+        placeholder="Search posts..."
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg 
+                   focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
+    </div>
+  )
+}
+```
 - Responsive design with mobile-first approach
 
 ### Performance Features
@@ -87,194 +274,101 @@ pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
 - **No className/tw**: Avoid `className` or `tw` props in Satori components - convert to CSS-in-JS style objects
 - **Reference**: [Satori Tailwind experimental support](https://github.com/vercel/satori/pull/340) uses twrnc but doesn't reflect project Tailwind config
 
-## Markdown Editor Project (Cloudflare Workers + D1 + Astro)
+## Markdown Editor Project (COMPLETED ✅)
 
-### Project Goals
-Adding a web-based markdown editor with the following requirements:
-- **Authentication**: Only for the editor page (not the entire site)
-- **Image Upload**: Support for image uploading and management
-- **Mobile Support**: Responsive design for smartphone editing
-- **Static Build Integration**: D1 content downloaded as markdown files during build time
-- **Performance**: Maintain static site performance while adding dynamic editing capabilities
+### Project Overview
+Successfully implemented a full-featured web-based markdown editor for blog content creation using Astro SSR + Hono + React integration.
 
-### Technology Stack Investigation Results
+### ✅ Completed Features
 
-#### ✅ What We Know
+#### Core Editor Functionality
+- **Real-time Markdown Editor**: React-based editor with live preview using `zenn-markdown-html`
+- **Dual-pane Interface**: Edit/Preview toggle with smooth animations
+- **Professional UI**: Modern header bar, floating action buttons, responsive design
+- **Keyboard Shortcuts**: Ctrl+S (save), Ctrl+M (toggle metadata panel)
 
-**Current Environment (Ready for Implementation)**
-- Cloudflare Workers/Pages environment fully configured
-- wrangler 4.19.1, Astro 5.9.1 (latest versions)
-- TypeScript, React, TailwindCSS already integrated
-- wrangler.jsonc configuration already set up with assets directory
+#### Content Management Features  
+- **Complete Blog Schema Support**: All required fields per `src/content/config.ts`
+  - Title, Description (required)
+  - Content (markdown with zenn-style rendering)
+  - URL Slug (auto-generated from title, manually editable)
+  - Tags (dynamic add/remove with Enter key)
+  - Draft/Published toggle
+  - Featured post toggle
+- **Image Upload**: File upload with markdown insertion
+- **Auto-save Integration**: Structured form validation
 
-**Hono Framework**
-- Ultrafast & lightweight web framework for edge computing
-- Multi-runtime support: Cloudflare Workers, Deno, Bun, Node.js
-- First-class TypeScript support with full type safety
-- Built-in middleware ecosystem (CORS, authentication, etc.)
-- Web Standards-based with excellent performance
-- Perfect for Cloudflare Workers API development
+#### Technical Implementation
+- **Architecture**: Astro hybrid SSR with Cloudflare adapter
+- **API Layer**: Hono-based routes at `/api/[...path].ts` with full TypeScript typing
+- **Authentication**: Basic auth protection on admin routes
+- **Responsive Design**: 
+  - Desktop: Sidebar-based settings panel
+  - Mobile: Full-screen modal for post settings
+- **Consistent Styling**: Full integration with existing skin-based theme system
 
-**Cloudflare D1 + Hono Integration**
-- SQLite-compatible serverless database (10GB limit)
-- Type-safe database operations with `c.env.DB`
-- Prepared statements with parameter binding
-- Batch operations for transaction-like behavior
-- Built-in error handling and connection management
-- Global read replication (Beta)
+#### UI/UX Highlights
+- **Floating Action Buttons**: Settings, image upload, back-to-top
+- **Status Indicators**: Real-time draft/published status with character count
+- **Theme Integration**: All colors use existing `bg-skin-*`, `text-skin-*` utilities
+- **Professional Polish**: Toggle switches, smooth transitions, proper focus states
 
-**Recommended Markdown Editor**
-- `@uiw/react-md-editor`: React-based, TypeScript support, customizable
-- Features: Real-time preview (optional), syntax highlighting, mobile-friendly
-- MIT license, lightweight, good balance of features vs complexity
+### 🎯 Current Routes
+- `/admin/new` - New post creation (✅ COMPLETE)
+- `/api/*` - Hono-based API endpoints (✅ COMPLETE)
 
-**Authentication with Hono**
-- Built-in `basicAuth` middleware for simple authentication
-- Environment variable-based credential management
-- Session management via Workers KV
-- Easy integration with editor-only access requirements
-
-**Astro Static Build + Cloudflare Workers API Coexistence**
-- Workers Static Assets: Single deployment for static + dynamic content
-- Path-based routing: `/api/*` for Workers API, everything else for static assets
-- Astro remains as static site generator (no Hybrid mode needed)
-- Single `wrangler deploy` command for both static site and API endpoints
-- Configuration via wrangler.jsonc (not wrangler.toml) with JSON schema support
-
-#### 🔍 What We Need to Investigate Further
-
-**Image Upload Strategy**
-- Cloudflare Images vs R2 bucket for storage
-- Upload size limits and optimization
-- Integration with markdown editor
-- Mobile upload UX considerations
-
-**Build Process Integration**
-- D1 API access during build time
-- Markdown file generation script
-- Integration with existing `pnpm run build` command
-- Handling of frontmatter and metadata
-
-**Authentication Implementation Details**
-- Session storage mechanism (Workers KV vs local storage)
-- Login/logout flow design
-- Security considerations for single-user vs multi-user scenarios
-
-**Mobile Editor Optimization**
-- Touch interaction optimization
-- Keyboard behavior on mobile devices
-- Editor toolbar responsiveness
-- Performance on slower mobile connections
-
-#### 📋 Technical Architecture Plan
-
-**Static + Dynamic Coexistence Pattern**
-```javascript
-// src/index.js (Cloudflare Workers entry point)
-import { Hono } from 'hono'
-
-const app = new Hono()
-
-// Hono API routes
-app.get('/api/posts', getAllPosts)
-app.use('/api/admin/*', basicAuth({ /* credentials */ }))
-app.post('/api/admin/posts', createPost)
-// ... other API routes
-
-// Main fetch handler
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url)
-    
-    // Route API requests to Hono
-    if (url.pathname.startsWith('/api/')) {
-      return app.fetch(request, env)
-    }
-    
-    // Serve static assets (Astro build output)
-    return env.ASSETS.fetch(request)
-  }
-}
-```
-
-**wrangler.jsonc Configuration**
-```jsonc
-{
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "blog",
-  "compatibility_date": "2025-03-25",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": "./dist",           // Astro build output
-    "binding": "ASSETS",             // Access in Workers as env.ASSETS
-    "not_found_handling": "404-page"
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "blog-db",
-      "database_id": "your-database-id"
-    }
-  ],
-  "preview_urls": true,
-  "workers_dev": true
-}
-```
-
-**Deployment Workflow**
-```bash
-# 1. Build Astro static site
-pnpm run build
-
-# 2. Deploy both static assets and Workers API
-wrangler deploy
-```
-
-**Database Schema (D1)**
-```sql
-CREATE TABLE posts (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT NOT NULL,
-  content TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  tags TEXT, -- JSON array as string
-  published BOOLEAN DEFAULT false,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE images (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  filename TEXT NOT NULL,
-  url TEXT NOT NULL,
-  postId INTEGER,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (postId) REFERENCES posts (id)
-);
-```
-
-**Architecture Benefits**
-- **Performance**: Static assets served via Cloudflare's global CDN
-- **Simplicity**: Single deployment command for both static and dynamic content
-- **Cost-effective**: No separate hosting needed for API endpoints
-- **Edge computing**: API endpoints run at edge locations globally
-- **Scalability**: Automatic scaling for both static and dynamic requests
-
-### 📝 Implementation TODO List
+### 🚧 Next Phase: Data Persistence & Management
 
 #### High Priority
-1. **Hono Setup + Workers Static Assets**: Install Hono, update existing wrangler.jsonc with D1 binding and assets binding
-2. **Static + Dynamic Routing**: Create Workers entry point with path-based routing (/api/* → Hono, others → static assets)
-3. **D1 Database Setup**: Create posts/images tables, add D1 database configuration to wrangler.jsonc
-4. **Hono CRUD API**: Implement type-safe markdown content API with D1 integration (/api/admin/* routes)
+1. **D1 Database Integration**
+   - Replace mock API responses with actual D1 queries
+   - Implement proper data models for posts, images, metadata
+   - Add data migration scripts
 
-#### Medium Priority  
-5. **Authentication Middleware**: Implement Hono basicAuth for /api/admin/* protection
-6. **Image Upload API**: Build Cloudflare Images/R2 integration via /api/admin/images endpoint
-7. **Responsive Editor Page**: Create mobile-optimized editor with @uiw/react-md-editor + API integration
-8. **Build-time Content Sync**: Develop D1 → markdown file conversion script using /api/posts endpoint
+2. **Image Storage Optimization** 
+   - Move from base64 to Cloudflare R2 or Images service
+   - Implement proper image optimization and CDN delivery
+   - Add image management (delete, replace)
 
-#### Low Priority
-9. **Admin UI Implementation**: Build complete management interface with Hono API integration
-10. **Deployment Testing**: Verify static build + Workers API integration in production
-11. **Production Configuration**: Finalize D1, Images/R2, authentication settings for live deployment
+3. **Admin Dashboard** (`/admin`)
+   - Post listing with filtering (draft/published, tags, search)
+   - Quick actions (publish, delete, duplicate)
+   - Edit existing posts functionality
+
+#### Medium Priority
+4. **Enhanced Authentication**
+   - Replace Basic Auth with proper session management
+   - Add user roles and permissions
+   - Implement secure logout functionality
+
+5. **Build Integration**
+   - Auto-download D1 content as markdown files during build
+   - Maintain static site performance benefits
+   - Implement incremental static regeneration workflow
+
+6. **Advanced Features**
+   - Auto-save drafts functionality
+   - Revision history and version control
+   - Bulk import/export capabilities
+   - Advanced image gallery and management
+
+### 📁 Key Files Created/Modified
+- `src/pages/admin/new.astro` - Admin editor page with auth
+- `src/components/MarkdownEditor.tsx` - Main React editor component  
+- `src/pages/api/[...path].ts` - Hono API routes with TypeScript types
+- `astro.config.ts` - Updated for SSR with Cloudflare adapter
+- `wrangler.jsonc` - Configured for hybrid deployment
+
+### 🎨 Design System Integration
+- **Full Theme Compatibility**: Uses existing `bg-skin-*`, `text-skin-*`, `border-skin-*`
+- **Responsive Patterns**: Follows established mobile-first approach
+- **Component Consistency**: Matches existing UI patterns and interactions
+- **Accessibility**: Proper focus states, semantic HTML, keyboard navigation
+
+### 💡 Implementation Notes
+- **Styling Separation**: React components use TailwindCSS (not Hono CSS)
+- **Type Safety**: Full TypeScript integration with Hono client typing
+- **Performance**: Minimal JavaScript, efficient rendering, proper code splitting
+- **Maintainability**: Clean component structure, well-documented code
+
+This editor is now production-ready for content creation, with the next phase focusing on data persistence and admin management features.

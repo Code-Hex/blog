@@ -1,14 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "blog",
-  "main": "src/index.ts",
+  "main": "./dist/_worker.js/index.js",
   "account_id": "placeholder-will-be-replaced",
   "compatibility_date": "2025-03-25",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": "./dist",
     "binding": "ASSETS",
-    "not_found_handling": "404-page"
+    "directory": "./dist"
   },
   "d1_databases": [
     {
@@ -17,6 +16,7 @@
       "database_id": "placeholder-will-be-replaced"
     }
   ],
-  "preview_urls": true,
-  "workers_dev": true
+  "observability": {
+    "enabled": true
+  }
 }

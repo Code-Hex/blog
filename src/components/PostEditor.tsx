@@ -1,9 +1,26 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { hc } from "hono/client";
 import type { App } from "../pages/api/[...path]";
 import "zenn-content-css";
 
-const MarkdownEditor: React.FC = () => {
+interface PostEditorProps {
+  postId: string;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  description: string;
+  slug: string;
+  tags: string[];
+  draft: boolean;
+  featured: boolean;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const PostEditor: React.FC<PostEditorProps> = ({ postId }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [description, setDescription] = useState("");
@@ -15,6 +32,8 @@ const MarkdownEditor: React.FC = () => {
   const [isPreview, setIsPreview] = useState(false);
   const [previewHtml, setPreviewHtml] = useState("");
   const [showMetadata, setShowMetadata] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Hono client for typed API calls
@@ -22,18 +41,36 @@ const MarkdownEditor: React.FC = () => {
     typeof window !== "undefined" ? window.location.origin : ""
   );
 
-  // Auto-generate slug from title
-  React.useEffect(() => {
-    if (title && !slug) {
-      const autoSlug = title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-        .trim("-");
-      setSlug(autoSlug);
-    }
-  }, [title, slug]);
+  // Load existing post data
+  useEffect(() => {
+    const loadPost = async () => {
+      try {
+        const response = await client.api.posts[":id"].$get({
+          param: { id: postId },
+        });
+
+        if (response.ok) {
+          const post: Post = await response.json();
+          setTitle(post.title);
+          setContent(post.content);
+          setDescription(post.description);
+          setSlug(post.slug);
+          setTags(post.tags || []);
+          setDraft(post.draft);
+          setFeatured(post.featured);
+        } else {
+          alert("Failed to load post");
+        }
+      } catch (error) {
+        console.error("Error loading post:", error);
+        alert("Error loading post");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPost();
+  }, [postId]);
 
   // Handle tag input
   const handleTagAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -57,49 +94,34 @@ const MarkdownEditor: React.FC = () => {
       return;
     }
 
-    const finalSlug =
-      slug ||
-      title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-        .trim("-");
-
+    setSaving(true);
     try {
       const postData = {
         title,
         content,
         description,
-        slug: finalSlug,
+        slug,
         tags: tags.length > 0 ? tags : ["others"],
         draft,
         featured,
-        pubDatetime: new Date().toISOString(),
       };
 
-      console.log("Sending post data:", postData);
-
-      const response = await client.api["admin"]["posts"].$post({
+      const response = await client.api.admin.posts[":id"].$put({
+        param: { id: postId },
         json: postData,
       });
 
       if (response.ok) {
-        alert("Post saved successfully!");
-        // Reset form
-        setTitle("");
-        setContent("");
-        setDescription("");
-        setTags([]);
-        setSlug("");
-        setDraft(true);
-        setFeatured(false);
+        alert("Post updated successfully!");
       } else {
-        alert("Failed to save post");
+        const errorData = await response.json();
+        alert(`Failed to update post: ${errorData.error || "Unknown error"}`);
       }
     } catch (error) {
-      console.error("Error saving post:", error);
-      alert("Error saving post");
+      console.error("Error updating post:", error);
+      alert("Error updating post");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -163,6 +185,7 @@ const MarkdownEditor: React.FC = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("postId", postId);
 
       const response = await client.api["admin"]["images"].$post({
         form: formData,
@@ -186,7 +209,7 @@ const MarkdownEditor: React.FC = () => {
   };
 
   // Keyboard shortcut for save
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "s") {
         e.preventDefault();
@@ -203,18 +226,47 @@ const MarkdownEditor: React.FC = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [title, content, description, tags, draft, featured, slug, showMetadata]);
 
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-skin-fill">
+        <div className="text-center">
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-skin-accent border-t-transparent"></div>
+          <p className="mt-4 text-skin-base">Loading post...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto min-h-screen w-full max-w-5xl bg-skin-fill">
       {/* Header Bar */}
       <div className="bg-skin-fill/95 sticky top-0 z-50 border-b border-skin-line backdrop-blur-sm">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
-            <h1 className="text-lg font-semibold text-skin-base">
-              Blog Editor
-            </h1>
+            <a
+              href="/admin"
+              className="flex items-center gap-2 text-skin-base hover:text-skin-accent"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <span className="text-sm">Back to Dashboard</span>
+            </a>
+            <div className="h-4 w-px bg-skin-line"></div>
+            <h1 className="text-lg font-semibold text-skin-base">Edit Post</h1>
             <div className="hidden items-center gap-2 sm:flex">
               <div
-                className={`h-2 w-2 rounded-full ${draft ? "bg-skin-accent/60" : "bg-skin-base/30"}`}
+                className={`h-2 w-2 rounded-full ${draft ? "bg-skin-accent/60" : "bg-green-500"}`}
               ></div>
               <span className="text-skin-base/60 text-sm">
                 {draft ? "Draft" : "Published"}
@@ -284,12 +336,9 @@ const MarkdownEditor: React.FC = () => {
                     type="text"
                     value={slug}
                     onChange={e => setSlug(e.target.value)}
-                    placeholder="auto-generated-from-title"
+                    placeholder="url-slug"
                     className="placeholder-text-skin-base/40 focus:border-skin-accent w-full rounded-lg border border-skin-line bg-skin-fill px-3 py-2 text-sm text-skin-base focus:outline-none"
                   />
-                  <p className="text-skin-base/50 mt-1 text-xs">
-                    Leave empty to auto-generate from title
-                  </p>
                 </div>
 
                 {/* Tags */}
@@ -346,7 +395,7 @@ const MarkdownEditor: React.FC = () => {
                       className={`relative h-6 w-12 rounded-full border transition-colors duration-200 ${
                         draft
                           ? "border-skin-accent bg-skin-accent"
-                          : "bg-skin-base/20 border-skin-line"
+                          : "bg-green-500 border-green-500"
                       }`}
                     >
                       <div
@@ -442,7 +491,7 @@ const MarkdownEditor: React.FC = () => {
             showMetadata ? "z-30 md:z-40" : "z-40"
           }`}
         >
-          {/* Edit/Preview Toggle - iOS Style */}
+          {/* Edit/Preview Toggle */}
           <div className="flex items-center rounded-full border border-skin-line bg-white p-1 shadow-lg">
             <button
               onClick={() => setIsPreview(false)}
@@ -537,23 +586,28 @@ const MarkdownEditor: React.FC = () => {
           {/* Save Button */}
           <button
             onClick={handleSave}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-blue-500 bg-blue-500 text-white shadow-lg transition-all duration-200 hover:bg-blue-600"
+            disabled={saving}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-blue-500 bg-blue-500 text-white shadow-lg transition-all duration-200 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Save Post"
             aria-label="Save Post"
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"
-              />
-            </svg>
+            {saving ? (
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+            ) : (
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
+            )}
           </button>
         </div>
 
@@ -570,4 +624,4 @@ const MarkdownEditor: React.FC = () => {
   );
 };
 
-export default MarkdownEditor;
+export default PostEditor;

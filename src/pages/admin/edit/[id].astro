@@ -1,0 +1,45 @@
+---
+// Check for basic authentication
+const authorization = Astro.request.headers.get("authorization");
+if (!authorization) {
+  return new Response("Authentication required", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
+  });
+}
+
+const [scheme, encoded] = authorization.split(" ");
+if (scheme !== "Basic") {
+  return new Response("Invalid authentication scheme", { status: 401 });
+}
+
+const credentials = new TextDecoder().decode(
+  Uint8Array.from(atob(encoded), c => c.charCodeAt(0))
+);
+const [username, password] = credentials.split(":");
+
+// Basic authentication (replace with your preferred method)
+if (username !== "admin" || password !== "password") {
+  return new Response("Invalid credentials", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
+  });
+}
+
+// Get post ID from URL
+const { id } = Astro.params;
+if (!id) {
+  return new Response("Post ID required", { status: 400 });
+}
+
+import Layout from "../../../layouts/Layout.astro";
+import PostEditor from "../../../components/PostEditor.tsx";
+---
+
+<Layout title="Edit Post - Blog Admin" description="Edit blog post">
+  <PostEditor postId={id} client:load />
+</Layout>

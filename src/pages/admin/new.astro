@@ -1,29 +1,29 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import MarkdownEditor from "../../components/MarkdownEditor";
+import MarkdownEditor from "../../components/MarkdownEditor.tsx";
 
 export const prerender = false;
 
 // Basic auth check (in production, use proper authentication)
-const authHeader = Astro.request.headers.get('authorization');
-if (!authHeader || !authHeader.startsWith('Basic ')) {
-  return new Response('Unauthorized', {
+const authHeader = Astro.request.headers.get("authorization");
+if (!authHeader || !authHeader.startsWith("Basic ")) {
+  return new Response("Unauthorized", {
     status: 401,
     headers: {
-      'WWW-Authenticate': 'Basic realm="Admin Area"'
-    }
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
   });
 }
 
 const credentials = atob(authHeader.slice(6));
-const [username, password] = credentials.split(':');
+const [username, password] = credentials.split(":");
 
-if (username !== 'admin' || password !== 'changeme') {
-  return new Response('Unauthorized', {
+if (username !== "admin" || password !== "password") {
+  return new Response("Unauthorized", {
     status: 401,
     headers: {
-      'WWW-Authenticate': 'Basic realm="Admin Area"'
-    }
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
   });
 }
 ---

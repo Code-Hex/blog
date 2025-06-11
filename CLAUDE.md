@@ -25,6 +25,13 @@ pnpm run sync             # Generate TypeScript types for Astro modules
 # Content Management
 pnpm run zenn-feed        # Fetch and sync Zenn articles (uses Deno)
 
+# Database Management (D1)
+pnpm wrangler d1 create blog-db                          # Create D1 database (one-time setup)
+pnpm wrangler d1 migrations apply blog-db --local        # Apply all pending migrations locally
+pnpm wrangler d1 migrations apply blog-db --remote       # Apply all pending migrations to remote
+pnpm wrangler d1 migrations list blog-db --local         # List unapplied migrations
+pnpm wrangler d1 execute blog-db --command "SELECT COUNT(*) FROM posts" --local  # Test database
+
 # Wrangler
 pnpm run wrangler
 ```
@@ -372,3 +379,168 @@ Successfully implemented a full-featured web-based markdown editor for blog cont
 - **Maintainability**: Clean component structure, well-documented code
 
 This editor is now production-ready for content creation, with the next phase focusing on data persistence and admin management features.
+
+## TailwindCSS Design Principles (Learned from Official Documentation)
+
+### Core Philosophy: Utility-First Approach
+
+**Key Insight**: Instead of writing custom CSS, combine small utility classes to build complex interfaces rapidly.
+
+#### Design Principles from tailwindcss.com/docs/styling-with-utility-classes:
+
+1. **Rapid Prototyping & Iteration**
+   - Use utility classes for immediate visual feedback
+   - No context switching between HTML and CSS files
+   - Faster development cycle with instant results
+
+2. **Consistent Design Systems**
+   - Utilities enforce design constraints automatically
+   - Spacing scale: `gap-x-4`, `p-6`, `mx-auto` creates visual consistency
+   - Color palette: Predefined color steps prevent arbitrary values
+
+3. **Responsive Design Best Practices**
+   ```tsx
+   // Mobile-first approach with breakpoint prefixes
+   className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+   className="flex-col sm:flex-row sm:items-center"
+   ```
+
+4. **Interactive States & Transitions**
+   ```tsx
+   // Hover, focus, and disabled states
+   className="hover:bg-skin-fill/20 focus:ring-2 focus:ring-skin-accent disabled:opacity-50"
+   ```
+
+5. **Spacing & Sizing Philosophy**
+   - Use consistent spacing utilities: `gap-x-3`, `px-6 py-4`
+   - Leverage size utilities: `size-4`, `max-w-7xl`
+   - Maintain visual hierarchy with spacing scales
+
+### Modern UI Patterns Applied in AdminDashboard:
+
+#### 1. **Subtle Boundaries Instead of Heavy Borders**
+```tsx
+// ❌ Old approach: Heavy borders
+className="border border-gray-300"
+
+// ✅ New approach: Rings and shadows
+className="ring-1 ring-white/5 shadow-sm"
+```
+
+#### 2. **Elegant Focus States**
+```tsx
+// Professional focus management
+className="focus:ring-2 focus:ring-skin-accent focus:outline-none"
+```
+
+#### 3. **Semantic HTML with Utility Classes**
+```tsx
+// Proper accessibility with utility styling
+<nav aria-label="Pagination" className="flex items-center justify-between">
+<ul role="list" className="divide-y divide-white/5">
+```
+
+#### 4. **Layout Flexibility**
+```tsx
+// Flexbox patterns for complex layouts
+className="flex items-center justify-between"
+className="min-w-0 flex-1"  // Prevent text overflow
+className="ml-4 flex shrink-0 items-center"  // Fixed-width sections
+```
+
+#### 5. **Typography Hierarchy**
+```tsx
+// Clear text hierarchy
+className="text-2xl font-semibold text-skin-base"      // Headers
+className="text-sm leading-5 text-skin-base/60"        // Descriptions  
+className="text-xs text-skin-base/50"                  // Meta information
+```
+
+### Advanced Techniques Implemented:
+
+#### 1. **Opacity-Based Color Variants**
+```tsx
+// Dynamic opacity for interaction states
+className="bg-skin-fill/20"    // 20% opacity background
+className="ring-white/5"       // 5% white ring
+className="text-skin-base/60"  // 60% text opacity
+```
+
+#### 2. **Conditional Styling Patterns**
+```tsx
+// Template literal for dynamic classes
+className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+  post.draft
+    ? "bg-skin-accent/10 text-skin-accent ring-skin-accent/30"
+    : "bg-emerald-400/10 text-emerald-400 ring-emerald-400/30"
+}`}
+```
+
+#### 3. **Grid Systems with Responsive Breakpoints**
+```tsx
+// Responsive grid layout
+className="grid grid-cols-2 divide-x divide-white/5 sm:grid-cols-4"
+```
+
+#### 4. **Modern Button & Interactive Elements**
+```tsx
+// Professional button styling
+className="inline-flex items-center gap-x-1.5 rounded-md bg-skin-accent px-3 py-2 text-sm font-semibold text-skin-inverted shadow-sm hover:bg-skin-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-skin-accent"
+```
+
+### Key Takeaways for Future Development:
+
+1. **Always think mobile-first**: Start with base classes, add `sm:`, `lg:` prefixes
+2. **Use semantic markup**: Combine `<nav>`, `<ul role="list">`, `aria-label` with utilities
+3. **Embrace opacity variants**: `bg-color/20` instead of creating new color variables
+4. **Focus states are mandatory**: Every interactive element needs proper focus styling
+5. **Consistent spacing scales**: Stick to the design system (gap-x-3, px-6 py-4)
+6. **Ring over border**: Use `ring-1 ring-white/5` for modern, subtle boundaries
+
+### Design Evolution: From Heavy to Light
+
+**Before (Heavy Design)**:
+- Solid borders everywhere
+- Bold font weights
+- High contrast shadows
+- Thick visual elements
+
+**After (TailwindCSS Official Style)**:
+- Subtle rings with low opacity
+- Balanced font weights (font-medium, font-semibold)
+- Soft shadows (shadow-sm)
+- Clean, minimal visual hierarchy
+
+This approach results in interfaces that feel modern, accessible, and professional while maintaining excellent usability across all devices and user preferences.
+
+### Critical Development Mindset: Avoid Knowledge Pretense
+
+**🚨 IMPORTANT PRINCIPLE: Never pretend to know what you don't know**
+
+During this project, a critical learning moment occurred when attempting to apply "TailwindCSS official site styling" without properly understanding the actual design principles. This led to:
+
+1. **Misunderstanding the color scheme**: Incorrectly assuming `bg-skin-fill` was a light theme when it was actually dark
+2. **Design criticism**: User correctly pointed out the design was "太く見えて安っぽい" (thick and cheap looking)
+3. **Knowledge gap**: Admitting "お前は何も知らない" (you know nothing) was accurate feedback
+
+#### Lessons Learned:
+
+**❌ What NOT to do:**
+- Don't claim familiarity with design systems without studying them thoroughly
+- Don't make assumptions about color schemes or design patterns
+- Don't apply "best practices" without understanding the underlying principles
+
+**✅ Correct approach:**
+- **Research first**: Always study the actual source material (like TailwindCSS docs)
+- **Ask for clarification**: When unsure, ask the user for specific guidance
+- **Admit knowledge gaps**: It's better to say "I need to learn this properly" than to guess
+- **Study examples**: Look at real implementations before making design decisions
+
+#### Applied Learning:
+After properly studying the TailwindCSS documentation, the design was completely revised with:
+- Subtle `ring-1 ring-white/5` instead of heavy borders
+- Proper opacity variants (`bg-skin-fill/20`)
+- Lightweight typography (`font-semibold` instead of `font-bold`)
+- Modern spacing and interaction patterns
+
+**Key Takeaway**: Humility and thorough research produce better results than confident guessing. Always prioritize understanding over appearing knowledgeable.

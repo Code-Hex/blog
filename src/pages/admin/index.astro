@@ -1,0 +1,42 @@
+---
+// Check for basic authentication
+const authorization = Astro.request.headers.get("authorization");
+if (!authorization) {
+  return new Response("Authentication required", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
+  });
+}
+
+const [scheme, encoded] = authorization.split(" ");
+if (scheme !== "Basic") {
+  return new Response("Invalid authentication scheme", { status: 401 });
+}
+
+const credentials = new TextDecoder().decode(
+  Uint8Array.from(atob(encoded), c => c.charCodeAt(0))
+);
+const [username, password] = credentials.split(":");
+
+// Basic authentication (replace with your preferred method)
+if (username !== "admin" || password !== "password") {
+  return new Response("Invalid credentials", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
+  });
+}
+
+import Layout from "../../layouts/Layout.astro";
+import AdminDashboard from "../../components/AdminDashboard.tsx";
+---
+
+<Layout
+  title="Blog Admin Dashboard"
+  description="Blog administration dashboard"
+>
+  <AdminDashboard client:load />
+</Layout>
